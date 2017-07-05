@@ -6,8 +6,6 @@ import { Provider } from 'react-redux';
 
 import './static/css/base.css';
 
-// use $store every where
-
 class App extends React.Component{
   render() {
     return (
