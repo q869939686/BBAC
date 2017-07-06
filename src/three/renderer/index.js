@@ -3,26 +3,38 @@ import scene from '../scene'
 import { WebGLRenderer } from 'three'
 import { Tween } from 'es6-tween'
 
-var renderer = null
-var windowHalfX = window.innerWidth / 2
-var windowHalfY = window.innerHeight / 2
+var renderer = new WebGLRenderer();
+var renderContainerElement = null;
 
-// 初始化Render
-var initRenderer = function () {
-    renderer = new WebGLRenderer()
+/**
+ * 初始化Render
+ * @param {Element} 装canvas的容器元素
+ * @return {renderer} 返回一个渲染器
+ */
+var initRenderer = function (el) {
+    renderContainerElement = el
     renderer.setSize(window.innerWidth,window.innerHeight)
     renderer.setClearColor(0x101010, 1.0)
     window.addEventListener( 'resize', onWindowResize, false )
+    renderer.render(scene, camera);
+    return renderer
 }
 
 var onWindowResize = function () {
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-    camera.aspect = window.innerWidth / window.innerHeight;
+    var width = 0;
+    var height = 0;
+    // 容器不一定是最大化
+    if (renderContainerElement !== null) {
+      width = renderContainerElement.offsetWidth;
+      height = renderContainerElement.offsetHeight;
+    } else {
+      width = window.innerWidth;
+      height = window.innerHeight;
+    }
+    camera.aspect = (width/2) / (height/2);
     camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( width, height );
 }
-initRenderer()
 
 //动画
 
@@ -33,5 +45,6 @@ var animate = function () {
 
 export {
   renderer,
-  animate
+  animate,
+  initRenderer
 }

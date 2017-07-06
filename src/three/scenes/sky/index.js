@@ -1,10 +1,9 @@
 var THREE = require('three');
-var Detector = require('three/helpers/Detector')
+var Detector = require('@/three/helpers/Detector')
 require('./SkyShader')
-import camera from 'three/camera'
-import scene from 'three/scene'
-import { renderer } from 'three/renderer'
-import controls from 'three/controls'
+import camera from '@/three/camera'
+import scene from '@/three/scene'
+import controls from '@/three/controls'
 import dat from '../../helpers/dat.gui.min.js'
 
 if ( ! Detector.webgl ) {

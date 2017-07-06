@@ -4,10 +4,11 @@
 
 // 是否开发环境
 const isDev = process.env.NODE_ENV === 'development';
+const BASE_PATH = window.location.origin + window.location.pathname.replace(/\w+\.(html|jsp)/, '');
 const AppConfig = {
     isDev: isDev,
-    API: isDev? 'local': window.location.origin + window.location.pathname.replace(/\w+\.(html|jsp)/, ''),
-    language: (window.navigator.language || window.navigator.browserLanguage).split('-')[0]
+    API: isDev? 'local': BASE_PATH,
+    BASE_PATH: isDev ? BASE_PATH + 'src/assets/' : BASE_PATH + 'assets/'
 }
 
 export default AppConfig

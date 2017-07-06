@@ -22,6 +22,8 @@
     "antd": "^2.11.2",
     "babel-polyfill": "^6.23.0",
     "es6-tween": "^2.2.5",
+    "mobx": "^3.1.16",
+    "mobx-react": "^4.2.2",
     "prop-types": "^15.5.8",
     "react": "^15.6.1",
     "react-dom": "^15.5.4",
@@ -137,5 +139,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "theme": {
+    "primary-color": "#1DA57A"
   }
 }

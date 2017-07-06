@@ -1,10 +1,12 @@
 /*引入 ant 会把html font-size设为50px; 再此设置与它抵消*/
 #root{
     position: relative;
-    font-size: 0.36rem;
-    background-color: #FFF;
+    font-size: 1rem;
+    background-color: #000;
 }
-
+body{
+    background-color: #000;
+}
 /*过度动画*/
 .example-enter {
   opacity: 0.01;
