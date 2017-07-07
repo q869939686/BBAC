@@ -18,4 +18,6 @@ import './scenes/sky';
 
 // assets:3D model,img
 animate()
-export default initRenderer;
+export {
+  initRenderer
+}

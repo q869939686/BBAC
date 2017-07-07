@@ -5,7 +5,7 @@ import { Tween } from 'es6-tween'
 
 var renderer = new WebGLRenderer();
 var renderContainerElement = null;
-
+var isAnimate = true; // 假设不在当前页面了就不渲染
 /**
  * 初始化Render
  * @param {Element} 装canvas的容器元素
@@ -39,12 +39,23 @@ var onWindowResize = function () {
 //动画
 
 var animate = function () {
+  if (!isAnimate) {return;}
   requestAnimationFrame( animate );
   renderer.render(scene, camera);
 };
 
+var setAnimateable = function (boolean) {
+  if (boolean === true) {
+    isAnimate = true;
+    animate();
+  } else {
+    isAnimate = false;
+  }
+  
+}
 export {
   renderer,
   animate,
-  initRenderer
+  initRenderer,
+  setAnimateable
 }
