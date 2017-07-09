@@ -1,15 +1,18 @@
-var THREE = require('three');
-import './MTLLoader'
-import './OBJLoader'
+
+import * as Three from 'three';
+// import './MTLLoader';
+// import './OBJLoader';
+
 //外部资源加载器
-var jsonLoader=new THREE.ObjectLoader()
-var objLoader = new THREE.OBJLoader()
-var mtlLoader = new THREE.MTLLoader()
-var materialLoader = new THREE.MaterialLoader()
+var jsonLoader = new Three.ObjectLoader();
+
+// var objLoader = new THREE.ObjectLoader()
+// var mtlLoader = new THREE.OBJMTLLoader()
+// var materialLoader = new THREE.MaterialLoader()
 // var fontLoader = new FontLoader()
 
 /*
-  加载.obj资源
+  加载JSON
   @param {array} [.json model]
   @param {function} [callback function]
   @return {void}
@@ -28,12 +31,12 @@ var loadJson = function (arr, callback) {
   })
 }
 /*
-  加载.obj资源
+  加载.mtl资源
   @param {array} [3dMaxs model]
   @param {function} [callback function]
   @return {void}
 */
-function loadOBJ (arr, callback) {
+/*function loadOBJ (arr, callback) {
     arr.map(function(item){
         mtlLoader.load( item + '.mtl', function( materials ) {
             materials.preload();
@@ -49,11 +52,11 @@ function loadOBJ (arr, callback) {
             );
         });
     })
-}
+}*/
 export {
   jsonLoader,
-  objLoader,
-  mtlLoader,
+  // objLoader,
+  // mtlLoader,
   loadJson,
-  loadOBJ
+  // loadOBJ
 }

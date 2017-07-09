@@ -1,17 +1,26 @@
 /*重写ant*/
+@background: #101010;
+@fontColor: #FFF;
 
+/*common*/
+body{
+    background-color: @background;
+}
+body
 /*bar*/
 .ant-tabs-bar{
     height: 90px;
     margin-bottom: 0;
 }
+.ant-table-thead > tr > th,
+.ant-pagination-prev, .ant-pagination-next,
 .ant-tabs{
-    background: #101010;
-    color: #FFF;
+    background: @background;
+    color: @fontColor;
 }
 .ant-tabs-nav .ant-tabs-tab:hover,
 .ant-tabs-nav .ant-tabs-tab-active{
-    background: #101010;
+    background: @background;
     color: red;
 }
 .ant-tabs-ink-bar{
@@ -22,4 +31,12 @@
 }
 .ant-tabs-nav-scroll{
     text-align: center;
+}
+
+/*table*/
+.ant-table{
+    color: @fontColor;
+}
+.ant-pagination-disabled a{
+    color: @fontColor;
 }

@@ -1,9 +1,24 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { loadingStatus } from '@/store/actions';
 import '@/three';
+import './index.css';
 import { initRenderer } from '@/three/renderer';
 import getRemainingHeight from '@/utils/dom/getRemainingHeight';
 import Loading from '@/components/loading';
-import Drawer from '@/components/drawer';
+import RightPanel from './right-panel';
+
+@connect(
+    // mapStateToProps
+    (state) => ({isCarLoadingCompleted: state.common.isCarLoadingCompleted}),
+    // buildActionDispatcher
+    (dispatch, ownProps) => ({
+        actions: bindActionCreators({
+            loadingStatus,
+        }, dispatch)
+    })
+)
 class Page extends React.Component {
     state = {
         threeContainerStyle: {
@@ -27,31 +42,27 @@ class Page extends React.Component {
             }
         });
         renderer.setSize( width, remainingHeight );
-        setTimeout(() => {
+    }
+    componentWillReceiveProps (nextProps) {
+        // car model loading completed, stop the Loading
+        if (nextProps.isCarLoadingCompleted === true) {
             this.setState({
                 isLoading: false
             });
-        }, 2000);
+        }
     }
     render () {
+        var remainingHeight = this.state.threeContainerStyle.height
         return (
-            <div>
-                {this.state.isLoading ? <Loading/> : null}
-                <div ref="threeContainer" style={this.state.threeContainerStyle}>
-
-                </div>
-                <Drawer 
-                    width="20%"
-                    position="right"
-                    containerStyle={{top: '48px', overflow: 'hidden'}} 
-                    openSecondary={true}
-                    parent={this}
-                    open={this.state.rightInfo} 
+            <div className="flex-row">
+                <div 
+                    ref="threeContainer" 
+                    style={this.state.threeContainerStyle}
+                    className="flex-col-8 renderer-container"
                 >
-                    <div>
-                        right
-                    </div>
-                </Drawer>
+                    {this.state.isLoading ? <Loading/> : null}
+                </div>
+                <RightPanel style={{height: remainingHeight}}></RightPanel>
             </div>
         )
     }

@@ -61,7 +61,8 @@
 //
 //
 // # Code
-var THREE = require('three')
+
+import * as THREE from 'three';
 //
 
 /** @namespace */

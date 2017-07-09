@@ -1,6 +1,6 @@
-## SGM-QMS
+## BBAC
 
-> QMS build for React v15.5
+> React v15.5 + three Vdev86
 
 ## 目录结构
 
@@ -19,7 +19,18 @@
 │ │   │── /middleware/  # redux中间件
 │ │   │── /reducer/     # reducer
 │ │   └── index.ts      # store入口
-│ ├── /types/           # 类型
+│ │ ├── /camera/        # three必备之一 相机
+│ │ ├── /controls/      # 控制器，与人交互的工具，拖拽，点击什么的
+│ │ ├── /helpers/       # 帮助开发three的工具
+│ │ ├── /loaders/       # 外部模型加载器
+│ │ ├── /renderer/      # three必备之一渲染器
+│ │ ├── /scene/         # three必备之一场景
+│ │ ├── /scenes/        # 所有的场景
+│ │ │ ├── /floor/       # 地板
+│ │ │ ├── /linght/      # 灯光
+│ │ │ ├── /sky/         # 天空
+│ │ │ └── /windmill/    # 风车
+│ │ └── index.js        # three.js入口文件
 │ ├── /utils/           # 工具函数
 │ ├── /views/           # 页面
 │ ├── App.jsx           # React入口

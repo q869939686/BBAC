@@ -8,7 +8,7 @@ const BASE_PATH = window.location.origin + window.location.pathname.replace(/\w+
 const AppConfig = {
     isDev: isDev,
     API: isDev? 'local': BASE_PATH,
-    BASE_PATH: isDev ? BASE_PATH + 'src/assets/' : BASE_PATH + 'assets/'
+    STATIC_PATH: isDev ? BASE_PATH + 'src/static/' : BASE_PATH + 'static/'
 }
 
 export default AppConfig

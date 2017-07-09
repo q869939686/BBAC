@@ -88,7 +88,7 @@ module.exports = merge(baseWebpackConfig, {
         options: {
           plugins: [
               "transform-decorators-legacy",
-              ['import', { libraryName: 'antd-mobile', style: true }],
+              ['import', { libraryName: 'antd', style: true }],
           ]
         }
       },
