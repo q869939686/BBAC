@@ -101,7 +101,9 @@ class CarPartsTree extends React.Component {
         format: ['key', 'title', 'status'],
         originaFormat: ['名称', '名称', '状态']
     });
+    console.log(gData)
     generateList(gData);
+    console.log(gData)
     this.setState( () => {
         return {
             windmilList: gData
@@ -136,7 +138,9 @@ class CarPartsTree extends React.Component {
       for (var i = 0; i < data.length; i++){
         var item = data[i];
         var warningStyle = {color: '#fff'};
+        
         var index = item.key.search(searchValue);
+        // 初始，有问题的标红
         if (item.status !== 1 && !item.children) {
           warningStyle = {
             color: 'red'
@@ -147,6 +151,7 @@ class CarPartsTree extends React.Component {
         if (!item.children && !~index) {
           continue;
         }
+        // 搜索关键字标色
         const title = index > -1 ? (
           <span style={warningStyle}>
             {beforeStr}
@@ -154,16 +159,18 @@ class CarPartsTree extends React.Component {
             {afterStr}
           </span>
         ) : <span style={warningStyle}>{item.key}</span>;
+
         if (item.children) {
           temp.push((
             <TreeNode key={item.key} title={title}>
               {loop(item.children)}
             </TreeNode>
           ));
+          continue;
         }
         temp.push(<TreeNode key={item.key} title={title}/>);
       }
-      return temp
+      return temp;
     };
     return (
       <div
