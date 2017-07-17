@@ -11,7 +11,7 @@ import {
   loadJson
 } from './loaders'
 // controls(鼠标交互)
-import { controls, domEvents } from './controls'
+// import { controls, domEvents } from './controls'
 // scenes:
 // 灯光
 import { pointLight, ambientLight } from './scenes/light'

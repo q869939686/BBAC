@@ -8,7 +8,7 @@ import { initRenderer } from '@/three/renderer';
 import getRemainingHeight from '@/utils/dom/getRemainingHeight';
 import Loading from '@/components/loading';
 import RightPanel from './right-panel';
-
+import CarPartsTree from './car-parts-tree';
 @connect(
     // mapStateToProps
     (state) => ({isCarLoadingCompleted: state.common.isCarLoadingCompleted}),
@@ -54,7 +54,7 @@ class Page extends React.Component {
     render () {
         var remainingHeight = this.state.threeContainerStyle.height
         return (
-            <div className="flex-row">
+            <div className="flex-row" style={{position: 'relative'}}>
                 <div 
                     ref="threeContainer" 
                     style={this.state.threeContainerStyle}
@@ -62,7 +62,8 @@ class Page extends React.Component {
                 >
                     {this.state.isLoading ? <Loading/> : null}
                 </div>
-                <RightPanel style={{height: remainingHeight}}></RightPanel>
+                <RightPanel style={{height: remainingHeight}}/>
+                <CarPartsTree/>
             </div>
         )
     }

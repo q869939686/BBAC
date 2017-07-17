@@ -5,9 +5,11 @@ import {
     loadJson,
     jsonLoader
 } from '@/three/loaders';
+import { domEvents } from '@/three/controls';
+import { renderer } from '@/three/renderer';
+// redux
 import store from '@/store';
 import { loadingStatus } from '@/store/actions';
-import { domEvents } from '@/three/controls';
 
 // 异步加载模型
 require.ensure([], () => {
@@ -28,6 +30,8 @@ function loadCompleted (moduleCar) {
     store.dispatch(loadingStatus(true));
     // 透明的包裹层
     var wrap = null;
+    var carControl = new OrbitControls(car, renderer.domElement);
+    console.log(carControl)
     car.children.forEach((Mesh) => {
         
         if (Mesh.name === 'mouseout') {
@@ -51,7 +55,7 @@ function loadCompleted (moduleCar) {
 /**
  * 非选中目标透明
  * @param {Group} group not material, must has children
- * @param {Mesh} target 选中目标
+ * @param {Mesh} target 选中目标 when alter='out' target = null
  * @param {string} alter = 'over' | 'out'
  * @return {void}
  */
