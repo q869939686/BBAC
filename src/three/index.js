@@ -11,13 +11,17 @@ import {
   loadJson
 } from './loaders'
 // controls(鼠标交互)
-// import { controls, domEvents } from './controls'
-// scenes:
+import { controls, domEvents } from './controls'
+
+// scenes(所有场景):
 // 灯光
 import { pointLight, ambientLight } from './scenes/light'
+
+import './scenes/test';
 import './scenes/car';
+console.log(scene)
 // assets:3D model,img
-animate()
+// animate()
 export {
   initRenderer
 }

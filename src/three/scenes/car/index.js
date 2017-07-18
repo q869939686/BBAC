@@ -30,10 +30,7 @@ function loadCompleted (moduleCar) {
     store.dispatch(loadingStatus(true));
     // 透明的包裹层
     var wrap = null;
-    var carControl = new OrbitControls(car, renderer.domElement);
-    console.log(carControl)
     car.children.forEach((Mesh) => {
-        
         if (Mesh.name === 'mouseout') {
             wrap = Mesh;
             domEvents.addEventListener(wrap, 'mouseout', function (event) {
@@ -49,8 +46,26 @@ function loadCompleted (moduleCar) {
             showTarget(car, event.target, 'over');
             wrap.material.opacity = 0;
         }, false);
-    })
-
+    });
+    // car控制器
+    /* renderer.domElement.addEventListener('mousedown', function (ev) {
+        var startX = ev.clientX;
+        var startY = ev.clientY;
+        renderer.domElement.addEventListener('mousemove', handleMove);
+        
+        renderer.domElement.addEventListener("mouseup", handleUp);
+        function handleMove (ev) {
+            var x = (startX - ev.clientX);
+            var y = (startY - ev.clientY);
+            console.log(y)
+            // car.rotation.x = x;
+            car.rotation.y += (y * Math.PI / 180);
+        }
+        function handleUp () {
+            renderer.domElement.removeEventListener('mousemove', handleMove);
+            renderer.domElement.removeEventListener('mouseup', handleUp);
+        }
+    }); */
 }
 /**
  * 非选中目标透明

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { loadingStatus } from '@/store/actions';
 import '@/three';
 import './index.css';
-import { initRenderer } from '@/three/renderer';
+import { initRenderer, setAnimateable } from '@/three/renderer';
 import getRemainingHeight from '@/utils/dom/getRemainingHeight';
 import Loading from '@/components/loading';
 import RightPanel from './right-panel';
@@ -32,7 +32,6 @@ class Page extends React.Component {
         // set container width/height and set renderer width/height
         var renderer = initRenderer(this.refs.threeContainer);
         var width = this.refs.threeContainer.offsetWidth;
-        this.refs.threeContainer.appendChild(renderer.domElement);
         // 获取容器剩余高度
         var remainingHeight = getRemainingHeight(this.refs.threeContainer);
         this.setState({
@@ -41,7 +40,9 @@ class Page extends React.Component {
                 height: remainingHeight + 'px'
             }
         });
+        this.refs.threeContainer.appendChild(renderer.domElement);
         renderer.setSize( width, remainingHeight );
+        setAnimateable(true);
     }
     componentWillReceiveProps (nextProps) {
         // car model loading completed, stop the Loading

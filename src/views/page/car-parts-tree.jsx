@@ -96,14 +96,14 @@ class CarPartsTree extends React.Component {
   componentWillMount () {
     // 获取数据
     var data = require('@/static/json/data.json');
+    // 转换key
     gData[0].children = array2Array({
         data: data.windmillData,
         format: ['key', 'title', 'status'],
         originaFormat: ['名称', '名称', '状态']
     });
-    console.log(gData)
+      // 转换tree所需要的结构
     generateList(gData);
-    console.log(gData)
     this.setState( () => {
         return {
             windmilList: gData
