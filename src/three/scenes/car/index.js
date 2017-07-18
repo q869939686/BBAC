@@ -1,6 +1,7 @@
 import scene from '@/three/scene';
 import { Group } from 'three';
 import OrbitControls from 'three-orbitcontrols';
+import TransformControls from '@/three/controls/three-transformcontrols';
 import {
     loadJson,
     jsonLoader
@@ -48,6 +49,19 @@ function loadCompleted (moduleCar) {
         }, false);
     });
     // car控制器
+    /*var controls = new OrbitControls(car, renderer.domElement);
+    controls.addEventListener('change', function (ev) {
+        console.log(ev.target.object.rotation)
+        return;
+    });
+    console.log()
+    controls.autoRotate = true;
+    controls.enablePan = false;
+    controls.enableRotate = true;*/
+    var control = new TransformControls(car, renderer.domElement);
+
+    console.log(control)
+    control.setMode('rotate');
     /* renderer.domElement.addEventListener('mousedown', function (ev) {
         var startX = ev.clientX;
         var startY = ev.clientY;

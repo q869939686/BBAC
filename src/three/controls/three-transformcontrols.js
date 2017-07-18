@@ -3,8 +3,9 @@
  */
 
 
-  import * as THREE from 'three';
+  import * as Three from 'three';
 
+  	var THREE = Three;
 	var GizmoMaterial = function ( parameters ) {
 
 		THREE.MeshBasicMaterial.call( this );
@@ -79,8 +80,8 @@
 
 	var pickerMaterial = new GizmoMaterial( { visible: false, transparent: false } );
 
-
-	THREE.TransformGizmo = function () {
+	// THREE.TransformGizmo
+	var TransformGizmo = function () {
 
 		var scope = this;
 
@@ -195,10 +196,10 @@
 
 	};
 
-	THREE.TransformGizmo.prototype = Object.create( THREE.Object3D.prototype );
-	THREE.TransformGizmo.prototype.constructor = THREE.TransformGizmo;
+	TransformGizmo.prototype = Object.create( THREE.Object3D.prototype );
+	TransformGizmo.prototype.constructor = TransformGizmo;
 
-	THREE.TransformGizmo.prototype.update = function ( rotation, eye ) {
+	TransformGizmo.prototype.update = function ( rotation, eye ) {
 
 		var vec1 = new THREE.Vector3( 0, 0, 0 );
 		var vec2 = new THREE.Vector3( 0, 1, 0 );
@@ -219,10 +220,10 @@
 		} );
 
 	};
+	// THREE.TransformGizmoTranslate
+	var TransformGizmoTranslate = function () {
 
-	THREE.TransformGizmoTranslate = function () {
-
-		THREE.TransformGizmo.call( this );
+		TransformGizmo.call( this );
 
 		var arrowGeometry = new THREE.Geometry();
 		var mesh = new THREE.Mesh( new THREE.CylinderGeometry( 0, 0.05, 0.2, 12, 1, false ) );
@@ -350,12 +351,12 @@
 
 	};
 
-	THREE.TransformGizmoTranslate.prototype = Object.create( THREE.TransformGizmo.prototype );
-	THREE.TransformGizmoTranslate.prototype.constructor = THREE.TransformGizmoTranslate;
+	TransformGizmoTranslate.prototype = Object.create( TransformGizmo.prototype );
+	TransformGizmoTranslate.prototype.constructor = TransformGizmoTranslate;
+	// THREE.TransformGizmoRotate
+	var TransformGizmoRotate = function () {
 
-	THREE.TransformGizmoRotate = function () {
-
-		THREE.TransformGizmo.call( this );
+		TransformGizmo.call( this );
 
 		var CircleGeometry = function ( radius, facing, arc ) {
 
@@ -438,7 +439,7 @@
 
 		this.update = function ( rotation, eye2 ) {
 
-			THREE.TransformGizmo.prototype.update.apply( this, arguments );
+			TransformGizmo.prototype.update.apply( this, arguments );
 
 			var group = {
 
@@ -500,12 +501,12 @@
 
 	};
 
-	THREE.TransformGizmoRotate.prototype = Object.create( THREE.TransformGizmo.prototype );
-	THREE.TransformGizmoRotate.prototype.constructor = THREE.TransformGizmoRotate;
+	TransformGizmoRotate.prototype = Object.create( TransformGizmo.prototype );
+	TransformGizmoRotate.prototype.constructor = TransformGizmoRotate;
+	// THREE.TransformGizmoScale
+	var TransformGizmoScale = function () {
 
-	THREE.TransformGizmoScale = function () {
-
-		THREE.TransformGizmo.call( this );
+		TransformGizmo.call( this );
 
 		var arrowGeometry = new THREE.Geometry();
 		var mesh = new THREE.Mesh( new THREE.BoxGeometry( 0.125, 0.125, 0.125 ) );
@@ -600,10 +601,10 @@
 
 	};
 
-	THREE.TransformGizmoScale.prototype = Object.create( THREE.TransformGizmo.prototype );
-	THREE.TransformGizmoScale.prototype.constructor = THREE.TransformGizmoScale;
-
-	THREE.TransformControls = function ( camera, domElement ) {
+	TransformGizmoScale.prototype = Object.create( TransformGizmo.prototype );
+	TransformGizmoScale.prototype.constructor = TransformGizmoScale;
+	// THREE.TransformControls
+	var TransformControls = function ( camera, domElement ) {
 
 		// TODO: Make non-uniform scale and rotate play nice in hierarchies
 		// TODO: ADD RXYZ contol
@@ -627,9 +628,9 @@
 		var _plane = "XY";
 		var _gizmo = {
 
-			"translate": new THREE.TransformGizmoTranslate(),
-			"rotate": new THREE.TransformGizmoRotate(),
-			"scale": new THREE.TransformGizmoScale()
+			"translate": new TransformGizmoTranslate(),
+			"rotate": new TransformGizmoRotate(),
+			"scale": new TransformGizmoScale()
 		};
 
 		for ( var type in _gizmo ) {
@@ -1152,7 +1153,7 @@
 
 	};
 
-	THREE.TransformControls.prototype = Object.create( THREE.Object3D.prototype );
-	THREE.TransformControls.prototype.constructor = THREE.TransformControls;
+	TransformControls.prototype = Object.create( THREE.Object3D.prototype );
+	TransformControls.prototype.constructor = TransformControls;
 
- export default THREE.TransformControls;
+	export default TransformControls;
