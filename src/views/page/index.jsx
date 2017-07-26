@@ -92,7 +92,11 @@ class Page extends React.Component {
                     className="flex-col-8 renderer-container"
                 >
                     {this.state.isLoading ? <Loading/> : null}
-                    <div className="car-body" onClick={this.backCarBody}>
+                    <div 
+                        className="car-body"
+                        style={{display: !this.props.isToPart ? 'none' : 'block'}}
+                        onClick={this.backCarBody}
+                    >
                         <img src={carBodyImg} alt="car-body"/>
                     </div>
                 </div>
