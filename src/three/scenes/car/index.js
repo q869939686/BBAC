@@ -49,7 +49,7 @@ function loadCompleted (moduleCar) {
         }, false);
     });
     // car控制器
-    /*var controls = new OrbitControls(car, renderer.domElement);
+    var controls = new OrbitControls(car, renderer.domElement);
     controls.addEventListener('change', function (ev) {
         console.log(ev.target.object.rotation)
         return;
@@ -57,7 +57,7 @@ function loadCompleted (moduleCar) {
     console.log()
     controls.autoRotate = true;
     controls.enablePan = false;
-    controls.enableRotate = true;*/
+    controls.enableRotate = true;
     var control = new TransformControls(car, renderer.domElement);
 
     console.log(control)
