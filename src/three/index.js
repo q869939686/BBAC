@@ -17,9 +17,8 @@ import { controls, domEvents } from './controls'
 // 灯光
 import { pointLight, ambientLight } from './scenes/light'
 
-import './scenes/test';
 import './scenes/car';
-console.log(scene)
+
 // assets:3D model,img
 // animate()
 export {

@@ -1,7 +1,7 @@
 import camera from '../camera'
 import scene from '../scene'
 import { WebGLRenderer } from 'three'
-import { Tween } from 'es6-tween'
+import { Tween, update } from 'es6-tween'
 
 var renderer = new WebGLRenderer();
 var renderContainerElement = null;
@@ -41,6 +41,8 @@ var onWindowResize = function () {
 var animate = function () {
   if (!isAnimate) {return;}
   requestAnimationFrame( animate );
+
+  update();
   renderer.render(scene, camera);
 };
 
