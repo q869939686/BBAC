@@ -79,6 +79,8 @@ class Page extends React.Component {
         .start()
         .on('complete', function () {
             resetControls();
+            controls.target = new Vector3(0, 0, 100);
+            controls.update();
             carPart.visible = false;
         });
     }

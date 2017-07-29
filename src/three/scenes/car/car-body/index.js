@@ -96,6 +96,7 @@ var toCarPart = function (camera, target, targetName) {
     .start()
     .on('complete', function () {
         controls.target = new Vector3(target.position.x, target.position.y + 1, target.position.z);
+        console.log(controls)
         controls.autoRotate = true;
         controls.update();
     });

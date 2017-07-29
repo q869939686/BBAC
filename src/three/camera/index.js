@@ -16,7 +16,7 @@ camera.rotation.set( -0,  -1.6,  0);
 )*/ 
 // camera.rotation.set( -0.20783558173798408,  -0.09429695894176246,  0.019853346558090398)
 // camera.lookAt({x:10,y:50,z:60});
-
+// 相机的运动
 export var cameraPosition = new Tween(camera.position);
 
 export default camera

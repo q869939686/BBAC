@@ -16,8 +16,6 @@ controls.maxPolarAngle = Math.PI / 2;
 controls.enableZoom = true; //缩放
 controls.enablePan = false; 
 controls.enableRotate = true; //转换
-
-console.log(controls)
 // 点击事件
 var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
