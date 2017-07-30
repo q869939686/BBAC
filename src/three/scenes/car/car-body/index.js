@@ -51,7 +51,8 @@ function loadCompleted (moduleCar) {
         }, false);
         domEvents.addEventListener(Mesh, 'dblclick', function (ev) {
             carPart.visible = true;
-            toCarPart(camera, findMesh(carPart, 'part_wrap'));
+            console.log(carPart)
+            toCarPart(findMesh(carPart, 'part_wrap'));
             carBody.visible = false;
         }, false);
     });
@@ -77,11 +78,9 @@ export function showTarget (group, target, alter) {
 }
 /**
  * 设置相机焦点，聚焦到零部件
- * @param {camera} 
  * @param {Mesh} target
- * @param {string}
  */
-var toCarPart = function (camera, target, targetName) {
+export var toCarPart = function (target) {
     if (target === null) {
         console.warn('target 不存在');
         return;
@@ -94,9 +93,8 @@ var toCarPart = function (camera, target, targetName) {
         z: target.position.z - 2
     }, 200)
     .start()
-    .on('complete', function () {
+    .once('complete', function () {
         controls.target = new Vector3(target.position.x, target.position.y + 1, target.position.z);
-        console.log(controls)
         controls.autoRotate = true;
         controls.update();
     });

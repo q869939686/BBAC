@@ -82,6 +82,22 @@ module.exports = {
         enforce: 'pre',
         include: paths.appSrc,
       },
+      //First, run the linter.
+       {
+        test: /\.(js|jsx)$/,
+        enforce: 'pre',
+        use: [
+          {
+            options: {
+              formatter: eslintFormatter,
+              exclude: paths.appStatic,
+            },
+            loader: require.resolve('eslint-loader'),
+          },
+        ],
+        exclude: [paths.appStatic, paths.appThree],
+        include: paths.appSrc
+      },
       {
         test: /\.js$/,
         loader: require.resolve('source-map-loader'),
@@ -142,7 +158,7 @@ module.exports = {
               ident: 'postcss', // https://webpack.js.org/guides/migrating/#complex-options
               plugins: () => [
                 autoprefixer({
-                  browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8', 'iOS >= 8', 'Android >= 4'],
+                  browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 11', 'iOS >= 8', 'Android >= 4'],
                 }),
                 pxtorem({ rootValue: 100, propWhiteList: [] })
               ],
@@ -156,22 +172,7 @@ module.exports = {
           },
         ],
       },
-      // Compile .jsx?
-       {
-        test: /\.(js|jsx)$/,
-        enforce: 'pre',
-        use: [
-          {
-            options: {
-              formatter: eslintFormatter,
-              exclude: paths.appStatic,
-            },
-            loader: require.resolve('eslint-loader'),
-          },
-        ],
-        exclude: [paths.appStatic, paths.appThree],
-        include: paths.appSrc
-      },
+      
       // Compile .tsx?
       {
         test: /\.(ts|tsx)$/,
