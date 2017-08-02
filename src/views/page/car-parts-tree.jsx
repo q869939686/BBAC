@@ -1,67 +1,94 @@
 import * as React from 'react';
 import { Tree, Input } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
-import array2Array from '@/utils/array/array2Array';
+// import array2Array from '@/utils/array/array2Array';
 // import { GET } from '@/plugins/fetch/';
 // import data from 'assets/json/data.json';
 
+// three
+import {toCarPart, carBody} from '@/three/scenes/car/car-body';
+import findMesh from '@/utils/three/mesh/findMesh';
+import { carPart } from '@/three/scenes/car/car-parts';
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
-/*var cameraPosition = new TWEEN.Tween(camera.position);
-var cameraRotationX = new TWEEN.Tween(camera.rotation.x);*/
-
 
 var gData = [
   {
-    key:"汽车零部件",
-    title: "0-0",
+    key:"0-0",
+    title: "零件",
   }
 ];
-
 
 var wrapStyle = {
   position: 'absolute',
   top: '10px',
   left: '10px',
   textAlign: 'left',
-  maxWidth: '160px'
+  maxWidth: '160px',
 };
 
 // 生成一层数据
-const dataList = [];
+// TreeNode 需要{key: string, title: string, children?: Array, ...other}
 const generateList = (data) => {
+  var list = [];
   for (let i = 0; i < data.length; i++) {
+    
     const node = data[i];
-    const key = node.key;
-    dataList.push({ key, title: key });
+    var TreeNode = {
+      key: node.number,
+      title: node.name,
+      info: node.info,
+    };
     if (node.children) {
-      generateList(node.children, node.key);
+      TreeNode.children = generateList(node.children);
     }
+    list.push(TreeNode);
   }
+  return list;
 };
-// generateList(gData);
-// console.log(gData)
-const getParentKey = (key, tree) => {
-  let parentKey;
+
+/**
+ * 找出包含key的treeNode
+ * @param {string} search value 
+ * @param {array} tree 
+ */
+const getSearchKey = function (value, tree, keys = []) {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
+    if (node.key.search(value) > -1) {
+      keys.push(node.key);
+    }
     if (node.children) {
-      if (node.children.some(item => item.key === key)) {
-        parentKey = node.key;
-      } else if (getParentKey(key, node.children)) {
-        parentKey = getParentKey(key, node.children);
-      }
+      getSearchKey(value, node.children, keys);
     }
   }
-  return parentKey;
-};
+  return keys;
+}
 
 class CarPartsTree extends React.Component {
   state = {
-    expandedKeys: ['汽车零部件1'],
+    expandedKeys: ['0-0'],
     searchValue: '',
     autoExpandParent: true,
-    windmilList: []
+    list: []
+  }
+ 
+  componentWillMount () {
+    
+    // 获取数据
+    var data = require('@/static/json/data.json');
+    // 转换tree所需要的结构
+    generateList(data['car-part']);
+    gData[0].children = generateList(data['car-part']);
+    this.setState( () => {
+        return {
+            list: gData
+        }
+    })
+  }
+  componentDidMount(){
+    // 搜索框自动聚焦
+    this.refs.search.input.refs.input.focus()
   }
   onExpand = (expandedKeys) => {
     this.setState({
@@ -72,111 +99,49 @@ class CarPartsTree extends React.Component {
   onChange = (e) => {
     const value = e.target.value;
 
-    const expandedKeys = dataList.map((item) => {
-      if (item.key.indexOf(value) > -1) {
-        return getParentKey(item.key, gData);
-      }
-      return null;
-    }).filter((item, i, self) => item && self.indexOf(item) === i);
+    const expandedKeys = getSearchKey(value, this.state.list);
 
     this.setState({
+      expandedKeys,
       searchValue: value
     });
-    console.log(expandedKeys)
   }
-  onMouseEnter = () => {
 
-  }
-  onMouseLeave = () => {
-
-  }
-  handleClick = (key) => {
-    // var key = key[0];
-  }
-  componentWillMount () {
-    // 获取数据
-    var data = require('@/static/json/data.json');
-    // 转换key
-    gData[0].children = array2Array({
-        data: data.windmillData,
-        format: ['key', 'title', 'status'],
-        originaFormat: ['名称', '名称', '状态']
-    });
-      // 转换tree所需要的结构
-    generateList(gData);
-    this.setState( () => {
-        return {
-            windmilList: gData
-        }
-    })
-    /*fetch( window.proPath + 'json/data.json')
-      .then( response => {
-        gData[0].children = array2Array({
-          data: response.data.windmillData,
-          format: ['key', 'title', 'status'],
-          originaFormat: ['名称', '名称', '状态']
-        });
-        generateList(gData);
-        this.setState( () => {
-          return {
-            windmilList: gData
-          }
-        })
-        // this.onChange()
-      })
-      .catch(function (error) {
-      });*/
-  }
-  componentDidMount(){
-    // 搜索框自动聚焦
-    this.refs.search.input.refs.input.focus()
+  handleClick = (keys) => {
+    var [key] = keys;
+    if (String(key) === '1231312314') {
+      carPart.visible = true;
+      toCarPart(findMesh(carPart, 'part_wrap'));
+      carBody.visible = false;
+    }
   }
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
-    const loop = data => {
-      var temp = [];
-      for (var i = 0; i < data.length; i++){
-        var item = data[i];
-        var warningStyle = {color: '#fff'};
-        
-        var index = item.key.search(searchValue);
-        // 初始，有问题的标红
-        if (item.status !== 1 && !item.children) {
-          warningStyle = {
-            color: 'red'
-          }
-        }
-        const beforeStr = item.key.substr(0, index);
-        const afterStr = item.key.substr(index + searchValue.length);
-        if (!item.children && !~index) {
-          continue;
-        }
-        // 搜索关键字标色
-        const title = index > -1 ? (
-          <span style={warningStyle}>
-            {beforeStr}
-            <span style={{ color: '#83B5DA' }}>{searchValue}</span>
-            {afterStr}
-          </span>
-        ) : <span style={warningStyle}>{item.key}</span>;
-
-        if (item.children) {
-          temp.push((
-            <TreeNode key={item.key} title={title}>
-              {loop(item.children)}
-            </TreeNode>
-          ));
-          continue;
-        }
-        temp.push(<TreeNode key={item.key} title={title}/>);
+    
+    const loop = data => data.map((item) => {
+      const index = item.key.search(searchValue);
+      const beforeStr = item.key.substr(0, index);
+      const afterStr = item.key.substr(index + searchValue.length);
+      const title = index > -1 ? (
+        <span>
+          {beforeStr}
+          <span style={{ color: 'red' }}>{searchValue}</span>
+          {afterStr}
+        </span>
+      ) : <span>{item.key}</span>;
+      if (item.children && item.children.length) {
+        return (
+          <TreeNode key={item.key} title={title}>
+            {loop(item.children)}
+          </TreeNode>
+        );
       }
-      return temp;
-    };
+      return <TreeNode key={item.key} title={title} />;
+    });
+    
     return (
       <div
         style={wrapStyle}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
         >
         <Search
           style={{ width: 160 }}
@@ -185,6 +150,7 @@ class CarPartsTree extends React.Component {
           ref="search"
         />
       <Scrollbars
+        className="black-box"
         style={{ width: 160, height: 400, color:'#fff' }}
         >
           <Tree
@@ -193,7 +159,7 @@ class CarPartsTree extends React.Component {
             expandedKeys={expandedKeys}
             autoExpandParent={autoExpandParent}
           >
-            {loop(this.state.windmilList)}
+            {loop(this.state.list)}
           </Tree>
         </Scrollbars>
       </div>

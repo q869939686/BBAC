@@ -7,7 +7,7 @@ import './index.css';
 // three
 import { Vector3 } from 'three';
 import { initRenderer, setAnimateable } from '@/three/renderer';
-import { controls, resetControls } from '@/three/controls';
+import { controls } from '@/three/controls';
 import { cameraPosition } from '@/three/camera';
 import { carBody } from '@/three/scenes/car/car-body';
 import { carPart } from '@/three/scenes/car/car-parts';
@@ -18,7 +18,7 @@ import ChartLine from '@/components/charts/chart-line';
 
 import RightPanel from './right-panel';
 import CarPartsTree from './car-parts-tree';
-import carBodyImg from '@/static/images/car-body.jpg';console.log(controls)
+import carBodyImg from '@/static/images/car-body.jpg';
 @connect(
     // mapStateToProps
     (state) => ({
@@ -77,13 +77,12 @@ class Page extends React.Component {
             z: 3.0942781347037497e-16
         }, 200)
         .start()
-        .on('complete', function () {
-            // resetControls();
-            controls.target = new Vector3(0, 0, 100);
-            controls.autoRotate = true;
+        .once('complete', function (t, n) {
+            controls.target = new Vector3(0, 0, 0);
             controls.update();
             carPart.visible = false;
         });
+        
     }
     render () {
         var remainingHeight = this.state.threeContainerStyle.height

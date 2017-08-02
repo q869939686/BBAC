@@ -26,15 +26,12 @@
 │ │ ├── /renderer/      # three必备之一渲染器
 │ │ ├── /scene/         # three必备之一场景
 │ │ ├── /scenes/        # 所有的场景
-│ │ │ ├── /floor/       # 地板
-│ │ │ ├── /linght/      # 灯光
-│ │ │ ├── /sky/         # 天空
-│ │ │ └── /windmill/    # 风车
+│ │ │ └── /car/         # 汽车模型
 │ │ └── index.js        # three.js入口文件
 │ ├── /utils/           # 工具函数
 │ ├── /views/           # 页面
 │ ├── App.jsx           # React入口
-│ ├── AppConfig.js      # 组件公共配置数据
+│ ├── AppConfig.js      # App公共配置信息
 │ └── index.js          # 项目入口文件
 └── package.json        # 项目信息
 ```
@@ -42,6 +39,7 @@
 
 ``` bash
 # 安装依赖包
+
 yarn
 
 # 启动开发环境服务
@@ -51,6 +49,16 @@ yarn start
 # 打包项目
 
 yarn build
+
+# npm 安装依赖包
+npm install
+
+
+# 启动开发环境服务
+npm run start
+
+# 打包项目
+npm run build
 
 ```
 

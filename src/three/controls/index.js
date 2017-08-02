@@ -19,14 +19,8 @@ controls.enableRotate = true; //转换
 // 点击事件
 var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
-var resetControls = function () {
-    controls.target = new Vector3(0, 0, 0);
-    controls.autoRotate = true;
-    controls.update();
-}
 export {
   controls,
   OrbitControls,
-  domEvents,
-  resetControls
+  domEvents
 }
