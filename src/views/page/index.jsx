@@ -18,7 +18,7 @@ import ChartLine from '@/components/charts/chart-line';
 
 import RightPanel from './right-panel';
 import CarPartsTree from './car-parts-tree';
-import carBodyImg from '@/static/images/car-body.jpg';
+import carBodyImg from '@/static/images/car-body.jpg';console.log(controls)
 @connect(
     // mapStateToProps
     (state) => ({
@@ -78,8 +78,9 @@ class Page extends React.Component {
         }, 200)
         .start()
         .on('complete', function () {
-            resetControls();
+            // resetControls();
             controls.target = new Vector3(0, 0, 100);
+            controls.autoRotate = true;
             controls.update();
             carPart.visible = false;
         });
