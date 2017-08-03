@@ -1,9 +1,9 @@
 // redux
 import store from '@/store';
-import { toCarPart } from '@/store/actions';
+import { changeShowChartStatus } from '@/store/actions';
 
 import scene from '@/three/scene';
-import { Group } from 'three';
+// import { Group } from 'three';
 import {
     jsonLoader
 } from '@/three/loaders';
@@ -38,8 +38,7 @@ function loadCompleted (moduleCarPart) {
     domEvents.addEventListener(carPart, 'click', function (ev) {
         // 非隐藏状态
         if (ev.target.material.opacity !== 0) {
-            console.log(ev)
-            store.dispatch(toCarPart(true))
+            store.dispatch(changeShowChartStatus(true));
         }
     }, false);
 }

@@ -1,4 +1,8 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { changeToPartStatus } from '@/store/actions';
+
 import { Tree, Input } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 // import array2Array from '@/utils/array/array2Array';
@@ -26,6 +30,16 @@ var wrapStyle = {
   textAlign: 'left',
   maxWidth: '160px',
 };
+/*react-custom-scrollbars  的垂直bar, 覆盖默认的*/
+function renderThumbVerticalDefault({ style, ...props }) {
+    const finalStyle = {
+        ...style,
+        cursor: 'pointer',
+        borderRadius: 'inherit',
+        backgroundColor: 'rgba(255, 255, 255, .5)'
+    };
+    return <div style={finalStyle} {...props} />;
+}
 
 // 生成一层数据
 // TreeNode 需要{key: string, title: string, children?: Array, ...other}
@@ -52,7 +66,7 @@ const generateList = (data) => {
  * @param {string} search value 
  * @param {array} tree 
  */
-const getSearchKey = function (value, tree, keys = []) {
+const getSearchKey = function (value, tree, keys = [gData[0].key]) {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.key.search(value) > -1) {
@@ -65,6 +79,18 @@ const getSearchKey = function (value, tree, keys = []) {
   return keys;
 }
 
+@connect(
+    // mapStateToProps
+    (state) => ({
+        isToPart: state.common.isToPart,
+    }),
+    // buildActionDispatcher
+    (dispatch, ownProps) => ({
+        actions: bindActionCreators({
+            changeToPartStatus
+        }, dispatch)
+    })
+)
 class CarPartsTree extends React.Component {
   state = {
     expandedKeys: ['0-0'],
@@ -96,39 +122,52 @@ class CarPartsTree extends React.Component {
       autoExpandParent: false,
     });
   }
-  onChange = (e) => {
+  /**
+   * 搜索动作
+   * @param {Event}
+   */
+  search = (e) => {
     const value = e.target.value;
-
     const expandedKeys = getSearchKey(value, this.state.list);
-
     this.setState({
       expandedKeys,
       searchValue: value
     });
   }
 
+  /**
+   * 点击item取id跳到对应的模型
+   * @param{string}
+   */
   handleClick = (keys) => {
     var [key] = keys;
     if (String(key) === '1231312314') {
-      carPart.visible = true;
       toCarPart(findMesh(carPart, 'part_wrap'));
+      this.props.actions.changeToPartStatus(true);
       carBody.visible = false;
+      carPart.visible = true;
     }
   }
   render() {
     const { searchValue, expandedKeys, autoExpandParent } = this.state;
     
+    // Recursive Traversal TreeNode
     const loop = data => data.map((item) => {
       const index = item.key.search(searchValue);
       const beforeStr = item.key.substr(0, index);
       const afterStr = item.key.substr(index + searchValue.length);
-      const title = index > -1 ? (
-        <span>
-          {beforeStr}
-          <span style={{ color: 'red' }}>{searchValue}</span>
-          {afterStr}
-        </span>
-      ) : <span>{item.key}</span>;
+      const title = index > -1 
+       ? (
+          <span>
+            {beforeStr}
+            <span style={{ color: 'red' }}>{searchValue}</span>
+            {afterStr}
+          </span>
+        ) 
+       :(searchValue !== '' && item.children === undefined)
+          ? null
+          : <span>{item.key}</span>;
+
       if (item.children && item.children.length) {
         return (
           <TreeNode key={item.key} title={title}>
@@ -146,12 +185,13 @@ class CarPartsTree extends React.Component {
         <Search
           style={{ width: 160 }}
           placeholder="Search"
-          onChange={this.onChange}
+          onChange={this.search}
           ref="search"
         />
       <Scrollbars
         className="black-box"
         style={{ width: 160, height: 400, color:'#fff' }}
+        renderThumbVertical={renderThumbVerticalDefault}
         >
           <Tree
             onSelect={this.handleClick}

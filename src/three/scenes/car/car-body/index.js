@@ -1,17 +1,16 @@
 // redux
 import store from '@/store';
-import { loadingStatus } from '@/store/actions';
+import { changeLoadingStatus, changeToPartStatus } from '@/store/actions';
 
 import scene from '@/three/scene';
-import camera, { cameraPosition } from '@/three/camera';
-import { Group, Vector3 } from 'three';
+import { cameraPosition } from '@/three/camera';
+import { Vector3 } from 'three';
 import {
     jsonLoader
 } from '@/three/loaders';
 import { domEvents, controls } from '@/three/controls';
-import { renderer } from '@/three/renderer';
 import { carPart } from '../car-parts';
-import transparent from '@/utils/three/material/transparent';
+
 import findMesh from '@/utils/three/mesh/findMesh';
 // 异步加载模型
 require.ensure([], () => {
@@ -30,7 +29,7 @@ function loadCompleted (moduleCar) {
     carBody = jsonLoader.parse(moduleCar);
     scene.add(carBody);
     // 通知store加载完成
-    store.dispatch(loadingStatus(true));
+    store.dispatch(changeLoadingStatus(true));
     // 透明的包裹层
     var wrap = null;
     carBody.children.forEach((Mesh) => {
@@ -51,9 +50,9 @@ function loadCompleted (moduleCar) {
         }, false);
         domEvents.addEventListener(Mesh, 'dblclick', function (ev) {
             carPart.visible = true;
-            console.log(carPart)
-            toCarPart(findMesh(carPart, 'part_wrap'));
             carBody.visible = false;
+            toCarPart(findMesh(carPart, 'part_wrap'));
+            store.dispatch(changeToPartStatus(true))
         }, false);
     });
 }

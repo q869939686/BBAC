@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadingStatus, toCarPart } from '@/store/actions';
+import { changeLoadingStatus, changeToPartStatus, changeShowChartStatus } from '@/store/actions';
 import '@/three';
 import './index.css';
 // three
@@ -19,17 +19,20 @@ import ChartLine from '@/components/charts/chart-line';
 import RightPanel from './right-panel';
 import CarPartsTree from './car-parts-tree';
 import carBodyImg from '@/static/images/car-body.jpg';
+
 @connect(
     // mapStateToProps
     (state) => ({
         isCarLoadingCompleted: state.common.isCarLoadingCompleted,
-        isToPart: state.common.isToPart
+        isToPart: state.common.isToPart,
+        isShowChart: state.common.isShowChart
     }),
     // buildActionDispatcher
     (dispatch, ownProps) => ({
         actions: bindActionCreators({
-            loadingStatus,
-            toCarPart
+            changeLoadingStatus,
+            changeToPartStatus,
+            changeShowChartStatus
         }, dispatch)
     })
 )
@@ -69,7 +72,8 @@ class Page extends React.Component {
     /* 返回车身 */
     backCarBody = () => {
         carBody.visible = true;
-        this.props.actions.toCarPart(false);
+        this.props.actions.changeToPartStatus(false);
+        this.props.actions.changeShowChartStatus(false);
         cameraPosition
         .to({
             x: -5.053339684320584,
@@ -105,7 +109,7 @@ class Page extends React.Component {
                 <RightPanel style={{height: remainingHeight}}/>
                 <CarPartsTree/>
                 {
-                    this.props.isToPart ? 
+                    this.props.isShowChart ? 
                         <ChartLine
                             style={{position:' absolute', top: '10px', left: '200px', textAlign: 'left', maxWidth: '160px',}}
                             chartStyle={{}}
