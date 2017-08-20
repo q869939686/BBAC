@@ -13,12 +13,14 @@ import { carPart } from '../car-parts';
 
 import findMesh from '@/utils/three/mesh/findMesh';
 // 异步加载模型
-require.ensure([], () => {
-    let moduleCar = require('@/static/json/model-car.json');
-    loadCompleted(moduleCar)
-}, 'moduleCar')
+import(/* webpackChunkName: 'moduleCar' */ '@/static/json/model-car.json')
+    .then(function (moduleCar) {
+        loadCompleted(moduleCar)
+    })
 
+// 整车车身    
 export var carBody = null;
+
 /**
  * 模型加载完成处理
  * @param {Object} carBody model
@@ -49,10 +51,13 @@ function loadCompleted (moduleCar) {
             wrap.material.opacity = 0;
         }, false);
         domEvents.addEventListener(Mesh, 'dblclick', function (ev) {
-            carPart.visible = true;
-            carBody.visible = false;
-            toCarPart(findMesh(carPart, 'part_wrap'));
-            store.dispatch(changeToPartStatus(true))
+            if (ev.target.name === 'part_27') {
+                carPart.visible = true;
+                carBody.visible = false;
+                toCarPart(findMesh(carPart, 'part_wrap'));
+                // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
+                store.dispatch(changeToPartStatus(true))
+            }
         }, false);
     });
 }
@@ -66,10 +71,12 @@ function loadCompleted (moduleCar) {
 export function showTarget (group, target, alter) {
     var opacity = alter === 'over'? 0.3 : 1;
     var transparent = alter === 'over'? true : false;
+    // 设置透明
     Array.isArray(group.children) && group.children.forEach(function (Mesh) {
         Mesh.material.transparent = transparent;
         Mesh.material.opacity = opacity;
     });
+    // target不透明
     if (alter === 'over') {
         target.material.transparent = false;
         target.material.opacity = 1; 

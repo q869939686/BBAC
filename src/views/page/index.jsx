@@ -11,10 +11,11 @@ import { controls } from '@/three/controls';
 import { cameraPosition } from '@/three/camera';
 import { carBody } from '@/three/scenes/car/car-body';
 import { carPart } from '@/three/scenes/car/car-parts';
-
+// components
 import getRemainingHeight from '@/utils/dom/getRemainingHeight';
 import Loading from '@/components/loading';
 import ChartLine from '@/components/charts/chart-line';
+import ChartBar from '@/components/charts/chart-bar';
 
 import RightPanel from './right-panel';
 import CarPartsTree from './car-parts-tree';
@@ -25,7 +26,8 @@ import carBodyImg from '@/static/images/car-body.jpg';
     (state) => ({
         isCarLoadingCompleted: state.common.isCarLoadingCompleted,
         isToPart: state.common.isToPart,
-        isShowChart: state.common.isShowChart
+        isShowChart: state.common.isShowChart,
+        barData: state.getChartData.barData
     }),
     // buildActionDispatcher
     (dispatch, ownProps) => ({
@@ -43,7 +45,8 @@ class Page extends React.Component {
             height: '100%'
         },
         isLoading: true,
-        rightInfo: true
+        rightInfo: true,
+        barOption: {}
     }
     componentDidMount () {
         // set container width/height and set renderer width/height
@@ -67,6 +70,7 @@ class Page extends React.Component {
             this.setState({
                 isLoading: false
             });
+            
         }
     }
     /* 返回车身 */
@@ -89,7 +93,9 @@ class Page extends React.Component {
         
     }
     render () {
-        var remainingHeight = this.state.threeContainerStyle.height
+        var {barData} = this.props;
+        var remainingHeight = this.state.threeContainerStyle.height;
+        
         return (
             <div className="flex-row" style={{position: 'relative'}}>
                 <div 
@@ -110,10 +116,16 @@ class Page extends React.Component {
                 <CarPartsTree/>
                 {
                     this.props.isShowChart ? 
-                        <ChartLine
-                            style={{position:' absolute', top: '10px', left: '200px', textAlign: 'left', maxWidth: '160px',}}
-                            chartStyle={{}}
-                        /> :
+                        (
+                            <div style={{position:' absolute', top: '10px', left: '200px', textAlign: 'left', maxWidth: '160px',}}>
+                                <ChartLine
+                                /> 
+                                <ChartBar
+                                    option={barData}
+                                />
+                            </div>
+                        )    
+                        :
                         null
                 }
             </div>

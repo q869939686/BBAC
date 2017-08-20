@@ -103,6 +103,7 @@ class CarPartsTree extends React.Component {
     
     // 获取数据
     var data = require('@/static/json/data.json');
+    
     // 转换tree所需要的结构
     generateList(data['car-part']);
     gData[0].children = generateList(data['car-part']);

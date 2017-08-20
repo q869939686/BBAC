@@ -11,23 +11,22 @@ var jsonLoader = new Three.ObjectLoader();
 // var materialLoader = new THREE.MaterialLoader()
 // var fontLoader = new FontLoader()
 
-/*
-  加载JSON
-  @param {array} [.json model]
-  @param {function} [callback function]
-  @return {void}
-*/
+/**
+ * 加载JSON格式模型
+ * @param {array} [.json model] 
+ * @param {function} [callback function] 
+ */
 var loadJson = function (arr, callback) {
-  arr.map(function(item){
-      jsonLoader.load(
-          // 资源链接
-          item,
-          // 资源加载完成后的回调函数
-          function ( obj) {
-               //添加点击事件
-              callback && callback(obj)
-          }
-      );
+    arr.forEach(function(item){
+        jsonLoader.load(
+            // 资源链接
+            item,
+            // 资源加载完成后的回调函数
+            function ( obj) {
+                //添加点击事件
+                callback && callback(obj)
+            }
+        );
   })
 }
 /*

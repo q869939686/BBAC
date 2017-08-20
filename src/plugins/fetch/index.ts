@@ -1,11 +1,13 @@
 /// <reference path="./index.d.ts" />
-import AppConfig from '../../AppConfig';
+import AppConfig from '@/AppConfig';
+import querystring from '@/utils/tools/querystring';
 
 interface Opts {
-    data: any,
-    succee: Function,
-    error?: Function,
-    timeout: number
+    method?: 'POST' | 'GET',
+    mode?: 'no-cors' | 'cors',
+    data: any, 
+    headers?: Headers,
+    timeout?: number
 }
 
 interface StatusError extends Error {
@@ -18,23 +20,27 @@ interface StatusError extends Error {
  * 
  */
 function checkStatus(response: Response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error: StatusError = new Error(response.statusText)
-    error.response = response
-    throw error
-  }
+    if (!(response.status >= 200 && response.status < 300)) {
+        var error: StatusError = new Error(response.statusText)
+        error.response = response
+        console.warn('response error:' + error);
+    }
+    return response;
 }
 /** 
  * parese response to JSON
  * @param {Response}
  */
 function parseJSON(response: Response) {
-  return response.json()
+    if (response.ok === false) {
+        console.warn('返回数据失败', response);
+        return response;
+    } else {
+        return response.json();
+    }
 }
 
-/* 给fetch包装一个fetch */
+/* 给fetch包装一个fetch, 增加超时功能 */
 function _fetch(fetchPromise: Promise<any>, timeout: number)  {
     var abortFn: Function;
 
@@ -61,53 +67,122 @@ function _fetch(fetchPromise: Promise<any>, timeout: number)  {
     return abortablePromise;
 }
 
+var defaultHeaders: Headers = new Headers();
+defaultHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
 /** POST方法
+ * @param {string} url
  * @param {Opts} see interface Opts
  * @return { void }
+ * @example
+ *  POST('/getData', {
+ *      headers: {
+ *          'Content-Type': 'application/x-www-form-urlencoded'
+ *      },
+ *      data: {
+ *          "path": "getProjectQualityList.json"
+ *      },
+ *  })
+ *  .then((res) => {
+ *      // todo somthing
+ *  })
+ *  .catch((error) => {
+ *      // xxxx
+ *  })
+ *  转换字符为formData格式
+ *  querystring.stringify({
+ *      "path": "getProjectQualityList.json"
+ *  })   =   "path=getProjectQualityList.json&xxx=xxx"
  */
 export function POST (url: string, opts: Opts) {
-    var succee: Function = opts.succee;
-    _fetch(
-        fetch(AppConfig.API + url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: opts.data
-        }),
-        opts.timeout || 15000
-    )
-    .then(checkStatus)
-    .then(parseJSON)
-    .then((res) => {
-        succee(res);
-    }).catch(error => {
-        if (error === 'timeout') {
-            alert(error)
-        } else if (opts.error) {
-            opts.error(error);
-        }
+
+    var reqUrl: string = AppConfig.API + url; 
+    var reqOpts: RequestInit = {
+        method: 'POST',
+        mode: 'cors',
+        headers: opts.headers || defaultHeaders,
+        credentials: 'same-origin',
+        body: null
+    }
+    
+    if (reqOpts.headers.get('Content-Type') === 'application/x-www-form-urlencoded' ) {
+        // 转换字符为formData格式
+        reqOpts.body = querystring.stringify(opts.data);
+    } else {
+        reqOpts.body = JSON.stringify(opts.data);
+    }
+
+    return new Promise(function (resolve: Function, reject?: Function) {
+        _fetch(
+            fetch(reqUrl, reqOpts),
+            opts.timeout || 60000
+        )
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((res) => {
+            resolve(res);
+        }).catch(error => {
+            if (error === 'timeout') {
+                alert(error)
+            } else if (reject) {
+                reject(error);
+            }
+        });
     });
 }
 
 /** GET方法
+ * @param {string}
  * @param {Opts} see interface Opts
  * @return { void }
+ * @example
+ *  
+ *  GET('/getData', {
+ *      headers: {
+ *          'Content-Type': 'application/x-www-form-urlencoded'
+ *      },
+ *      data: {
+ *          "path": "getProjectQualityList.json"
+ *      },
+ *  })
+ *  .then((res) => {
+ *      // todo somthing
+ *  })
+ *  .catch((error) => {
+ *      // xxxx
+ *  })
  */
+
 export function GET (url: string, opts: Opts) {
-    var succee: Function = opts.succee; 
-    fetch(AppConfig.API + url, {
+    // 不传给默认
+    var {
+        headers = defaultHeaders,
+        data = null,
+        timeout = 60000
+    } = opts || {};
+    var reqUrl: string = AppConfig.API + url + 
+    ((data !== null) 
+        ? '?' + querystring.stringify(data)
+        : ''); 
+    var reqOpts: RequestInit = {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: opts.data
-    })
-    .then(checkStatus)
-    .then(parseJSON)
-    .then((res) => {
-        succee(res)
-    })
+        mode: 'cors',
+        headers: headers,
+        credentials: 'same-origin'
+    }
+    console.log(reqUrl)
+    return new Promise(function (resolve: Function, reject?: Function) {
+        _fetch(fetch(reqUrl, reqOpts), timeout)
+        .then(checkStatus)
+        .then(parseJSON)
+        .then((res) => {
+            resolve(res);
+        }).catch(error => {
+            if (error === 'timeout') {
+                alert(error)
+            } else if (reject) {
+                reject(error);
+            }
+        });
+    });
 }

@@ -52,10 +52,12 @@ const data = [{
 
 class RightPanel extends React.Component {
     static defaultProps = {
+        show: false,
         style: {}
     }
     static propTypes = {
-        style: PropTypes.object
+        style: PropTypes.object,
+        show: PropTypes.bool
     }
     state = {
     }

@@ -1,21 +1,34 @@
 // redux
 import store from '@/store';
-import { changeShowChartStatus } from '@/store/actions';
+import { changeShowChartStatus, getChartData } from '@/store/actions';
+import {GET} from '@/plugins/fetch/';
+import AppConfig from '@/AppConfig';
 
 import scene from '@/three/scene';
-// import { Group } from 'three';
+import { Group } from 'three';
 import {
     jsonLoader
 } from '@/three/loaders';
 import { domEvents } from '@/three/controls';
 import transparent from '@/utils/three/material/transparent';
 // 异步加载模型
-require.ensure([], () => {
-    let moduleCarPart = require('@/static/json/car-part.json');
-    loadCompleted(moduleCarPart)
-}, 'moduleCarPart');
+// import(/* webpackChunkName: 'car-part' */ '@/static/json/car-part/A2056300403/A2056300403.json')
+//     .then(function (moduleCarPart) {
+//         console.log(moduleCarPart)
+//         // loadCompleted(moduleCarPart);
+//     })
+GET('/src/static/json/car-part/A2056300303/A2056300303.json')
+    .then(function (moduleCarPart) {
+        loadCompleted(moduleCarPart);
+    });
+
+GET('/src/static/json/car-part/A2056300403/A2056300403.json')
+    .then(function (moduleCarPart) {
+        loadCompleted(moduleCarPart);
+    });
+
 // 用来装所有零件
-export var carPart = null;
+export var carPart = new Group();;
 
 /**
  * 模型加载完成处理
@@ -24,8 +37,7 @@ export var carPart = null;
  */
 function loadCompleted (moduleCarPart) {
     // 解析JSON为three的scene;
-    var partsGroup = jsonLoader.parse(moduleCarPart);
-    carPart = partsGroup.children[0];
+    carPart.add(jsonLoader.parse(moduleCarPart));
     carPart.position.z = -10;
     carPart.scale.set(0.04, 0.04, 0.04)
     // 设为透明
@@ -34,11 +46,12 @@ function loadCompleted (moduleCarPart) {
     carPart.visible = false;
     scene.add(carPart);
     // 通知store加载完成
-    // store.dispatch(loadingStatus(true));
+
     domEvents.addEventListener(carPart, 'click', function (ev) {
         // 非隐藏状态
         if (ev.target.material.opacity !== 0) {
             store.dispatch(changeShowChartStatus(true));
+            store.dispatch(getChartData());
         }
     }, false);
 }

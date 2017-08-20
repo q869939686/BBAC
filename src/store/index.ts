@@ -1,10 +1,11 @@
-import { Store, createStore } from 'redux'; // applyMiddleware
+import { Store, createStore, applyMiddleware } from 'redux'; // applyMiddleware
 import rootReducer from './reducer';
-// import applyActions from './middleware/applyActions';
-// var initialState: Object = {};
-// var createStoreWidthMiddleware = applyMiddleware(applyActions)(createStore);
-var store: Store<any> = createStore(
-        rootReducer
-    );
+import thunkMiddleware from 'redux-thunk';
+// 用中间件创建一个store,让它具有异步action功能
+let createStoreWithMiddleware = applyMiddleware(
+    thunkMiddleware
+  )(createStore);
+  
+var store: Store<any> = createStoreWithMiddleware(rootReducer);
 
 export default store

@@ -46,6 +46,7 @@ var animate = function () {
   renderer.render(scene, camera);
 };
 
+
 var setAnimateable = function (boolean) {
   if (boolean === true) {
     isAnimate = true;
@@ -53,8 +54,8 @@ var setAnimateable = function (boolean) {
   } else {
     isAnimate = false;
   }
-  
 }
+
 export {
   renderer,
   animate,
