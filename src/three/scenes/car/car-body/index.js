@@ -1,23 +1,24 @@
-// redux
+// vuex
 import store from '@/store';
-import { changeLoadingStatus, changeToPartStatus } from '@/store/actions';
-
+// three
+import { Vector3 } from 'three';
 import scene from '@/three/scene';
 import { cameraPosition } from '@/three/camera';
-import { Vector3 } from 'three';
+import {animate} from '@/three/renderer';
 import {
     jsonLoader
 } from '@/three/loaders';
 import { domEvents, controls } from '@/three/controls';
+// model
 import { carPart } from '../car-parts';
 
 import findMesh from '@/utils/three/mesh/findMesh';
 // 异步加载模型
-import(/* webpackChunkName: 'moduleCar' */ '@/static/json/model-car.json')
-    .then(function (moduleCar) {
-        loadCompleted(moduleCar)
-    })
 
+window.axios.get('static/json/model-car.json')
+.then((res) => {
+    loadCompleted(res.data)
+})
 // 整车车身    
 export var carBody = null;
 
@@ -27,11 +28,13 @@ export var carBody = null;
  * @return {void}
  */
 function loadCompleted (moduleCar) {
+
     // 解析JSON为three的scene;
     carBody = jsonLoader.parse(moduleCar);
     scene.add(carBody);
+    animate();
     // 通知store加载完成
-    store.dispatch(changeLoadingStatus(true));
+    store.commit('LOADING_STATUS', true);
     // 透明的包裹层
     var wrap = null;
     carBody.children.forEach((Mesh) => {

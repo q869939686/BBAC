@@ -6,14 +6,15 @@ var ambientLight = null
 var initLight = function () {
   // 点光源
   pointLight = new PointLight( 0xffffff, 1, 200 );
-  pointLight.position.set(1, 100, -10);
+  pointLight.position.set(0, 110, 0);
   var pointLight2 = new PointLight( 0xffffff, 1, 200 );
-  pointLight2.position.set(15, 60, 30);
+  pointLight2.position.set(0, -100, 0);
   // 环境光
-  ambientLight = new AmbientLight( 0x505050 ); // soft white light
+  ambientLight = new AmbientLight( 0xBBBBBB ); // soft white light
   scene.add(pointLight)
   scene.add(pointLight2)
   scene.add(ambientLight)
+
 }
 initLight()
 

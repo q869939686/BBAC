@@ -15,12 +15,10 @@ import { controls, domEvents } from './controls'
 
 // scenes(所有场景):
 // 灯光
-import { pointLight, ambientLight } from './scenes/light'
-
-import './scenes/car';
+import './scenes/light'
 
 // assets:3D model,img
-// animate()
 export {
-  initRenderer
+  initRenderer,
+  animate
 }

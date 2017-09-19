@@ -1,0 +1,27 @@
+/*引入 ant 会把html font-size设为50px; 再此设置与它抵消*/
+#app, body{
+    position: relative;
+    font-size: 1rem;
+    background-color: #101010;
+}
+
+.black-box{
+    border-radius: 4px;
+    border: 1px solid #FFF;
+}
+/*iconfont*/
+.icon {
+    /* 通过设置 font-size 来改变图标大小 */
+    width: 1em; height: 1em;
+    /* 图标和文字相邻时，垂直对齐 */
+    vertical-align: -0.15em;
+    /* 通过设置 color 来改变 SVG 的颜色/fill */
+    fill: currentColor;
+    /* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
+        normalize.css 中也包含这行 */
+    overflow: hidden;
+}
+.icon.icon-up{
+    width: 3.5em;
+    height: 3.5em;
+}

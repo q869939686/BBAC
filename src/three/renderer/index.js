@@ -4,6 +4,7 @@ import { WebGLRenderer } from 'three'
 import { Tween, update } from 'es6-tween'
 
 var renderer = new WebGLRenderer();
+
 var renderContainerElement = null;
 var isAnimate = true; // 假设不在当前页面了就不渲染
 /**
@@ -37,16 +38,29 @@ var onWindowResize = function () {
 }
 
 //动画
+var animateRunList = []; // 在animate中要执行的操作队列(可能未来会在aniamte函数中添加更多东西，直接push到animateRunList中)
 
 var animate = function () {
   if (!isAnimate) {return;}
+  for (let i = 0; i < animateRunList.length; i ++) {
+    var fn = animateRunList[i];
+    if (typeof fn === 'function') {
+      fn();
+    }
+  }
   requestAnimationFrame( animate );
-
-  update();
-  renderer.render(scene, camera);
 };
 
+// 添加在animate中要执行的操作队列
+animateRunList.push(update);
+animateRunList.push(function () {
+  renderer.render(scene, camera);
+});
 
+/**
+ * 设置是否渲染动画
+ * @param {boolean}  
+ */
 var setAnimateable = function (boolean) {
   if (boolean === true) {
     isAnimate = true;
@@ -58,7 +72,8 @@ var setAnimateable = function (boolean) {
 
 export {
   renderer,
-  animate,
   initRenderer,
-  setAnimateable
+  animate,
+  animateRunList,
+  setAnimateable,
 }

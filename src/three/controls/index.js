@@ -10,7 +10,7 @@ var controls = new OrbitControls(camera, renderer.domElement);
 
 // 鼠标控制
 controls.addEventListener('change', function (ev) {
-   return;
+  return;
 })
 controls.maxPolarAngle = Math.PI / 2;
 controls.enableZoom = true; //缩放
