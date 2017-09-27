@@ -5,7 +5,7 @@ import { Tween, update } from 'es6-tween'
 
 var renderer = new WebGLRenderer();
 
-var renderContainerElement = null;
+var canvas = null;
 var isAnimate = true; // 假设不在当前页面了就不渲染
 /**
  * 初始化Render
@@ -13,7 +13,7 @@ var isAnimate = true; // 假设不在当前页面了就不渲染
  * @return {renderer} 返回一个渲染器
  */
 var initRenderer = function (el) {
-    renderContainerElement = el
+    canvas = el
     renderer.setSize(window.innerWidth,window.innerHeight)
     renderer.setClearColor(0x101010, 1.0)
     window.addEventListener( 'resize', onWindowResize, false )
@@ -25,9 +25,9 @@ var onWindowResize = function () {
     var width = 0;
     var height = 0;
     // 容器不一定是最大化
-    if (renderContainerElement !== null) {
-      width = renderContainerElement.offsetWidth;
-      height = renderContainerElement.offsetHeight;
+    if (canvas !== null) {
+      width = canvas.offsetWidth;
+      height = canvas.offsetHeight;
     } else {
       width = window.innerWidth;
       height = window.innerHeight;

@@ -3,7 +3,7 @@ import AppConfig from '@/AppConfig'
 
 var axios = Axios.create({
     baseURL: AppConfig.API,
-    timeout: 50000,
+    timeout: 320000,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
     }

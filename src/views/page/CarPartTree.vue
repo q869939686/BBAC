@@ -9,7 +9,14 @@
         <el-input placeholder="输入关键字进行过滤" v-model="filterText">
         </el-input>
 
-        <el-tree class="filter-tree" :data="data2" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree2">
+        <el-tree 
+            class="filter-tree"
+            :data="data2" 
+            :props="defaultProps" 
+            default-expand-all 
+            :filter-node-method="filterNode" 
+            ref="tree2"
+        >
         </el-tree>
     </scrollbar>
 </template>

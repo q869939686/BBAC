@@ -1,13 +1,18 @@
 
-import * as Three from 'three';
-// import './MTLLoader';
-// import './OBJLoader';
+var THREE = require('three')
+import createFBXLoader from './FBXLoader';
+
+createFBXLoader(THREE);
+require('./MTLLoader')
+require('./OBJLoader')
 
 //外部资源加载器
-var jsonLoader = new Three.ObjectLoader();
+var ObjectLoader = new THREE.ObjectLoader();
+var JSONloader = new THREE.JSONLoader();
+var FBXLoader = new THREE.FBXLoader();
 
-// var objLoader = new THREE.ObjectLoader()
-// var mtlLoader = new THREE.OBJMTLLoader()
+var objLoader = new THREE.OBJLoader()
+var mtlLoader = new THREE.MTLLoader()
 // var materialLoader = new THREE.MaterialLoader()
 // var fontLoader = new FontLoader()
 
@@ -16,9 +21,9 @@ var jsonLoader = new Three.ObjectLoader();
  * @param {array} [.json model] 
  * @param {function} [callback function] 
  */
-var loadJson = function (arr, callback) {
+var loadObject = function (arr, callback) {
     arr.forEach(function(item){
-        jsonLoader.load(
+        ObjectLoader.load(
             // 资源链接
             item,
             // 资源加载完成后的回调函数
@@ -35,7 +40,7 @@ var loadJson = function (arr, callback) {
   @param {function} [callback function]
   @return {void}
 */
-/*function loadOBJ (arr, callback) {
+function loadOBJ (arr, callback) {
     arr.map(function(item){
         mtlLoader.load( item + '.mtl', function( materials ) {
             materials.preload();
@@ -45,17 +50,19 @@ var loadJson = function (arr, callback) {
                 item + '.obj',
                 // 资源加载完成后的回调函数
                 function ( obj) {
-                    scene.add( obj );
+                    // scene.add( obj );
                     callback && callback(obj)
                 }
             );
         });
     })
-}*/
+}
 export {
-  jsonLoader,
+  ObjectLoader,
+  JSONloader,
+  FBXLoader,
   // objLoader,
   // mtlLoader,
-  loadJson,
-  // loadOBJ
+  loadObject,
+  loadOBJ
 }

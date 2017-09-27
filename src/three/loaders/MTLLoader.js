@@ -4,12 +4,6 @@
  * @author angelxuanchang
  */
 
-
-(function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-      (global.THREE.MTLLoader = factory());
-}(this, (function () { 'use strict'
  var THREE = require('three')
 
 THREE.MTLLoader = function ( manager ) {
@@ -546,5 +540,4 @@ THREE.MTLLoader.MaterialCreator.prototype = {
 	}
 
 };
-return THREE.MTLLoader
-})));
+

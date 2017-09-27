@@ -1,24 +1,237 @@
 // vuex
 import store from '@/store';
 // three
-import { Vector3 } from 'three';
+import { 
+    Vector3,
+    Mesh,
+    BoxBufferGeometry,
+    MeshStandardMaterial } from 'three';
 import scene from '@/three/scene';
-import { cameraPosition } from '@/three/camera';
+import camera, { cameraPosition } from '@/three/camera';
 import {animate} from '@/three/renderer';
 import {
-    jsonLoader
+    ObjectLoader,
+    JSONloader,
+    FBXLoader,
+    loadOBJ
 } from '@/three/loaders';
 import { domEvents, controls } from '@/three/controls';
 // model
-import { carPart } from '../car-parts';
+// import { carPart } from '../car-parts';
 
 import findMesh from '@/utils/three/mesh/findMesh';
-// 异步加载模型
 
-window.axios.get('static/json/model-car.json')
+// 异步加载模型1
+
+window.axios.get('static/json/car-part/Z1/model.json')
 .then((res) => {
-    loadCompleted(res.data)
+    // model.json只是修复Y轴向↑
+    carBody = ObjectLoader.parse(res.data);
+    scene.add(carBody);
+    // 调整控制中心
+    controls.target = new Vector3(carBody.position.x + 61, carBody.position.y, carBody.position.z - 4);
+    controls.autoRotate = true;
+    controls.update();
+    return true;
+}).then(function () {
+    /**
+     * Z1部分的零件
+     */
+    // 前端
+    window.axios.get('static/json/car-part/Z1/front-end.js')
+    .then((res) => {
+        // var parts = ObjectLoader.parse(res.data);
+        // carBody.add(parts);
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        mesh.name = 'front-end';
+        scene.add(mesh);
+    })
+    // 主底板
+    window.axios.get('static/json/car-part/Z1/main-floor-board.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        carBody.add(parts);
+    })
+    // 后端
+    window.axios.get('static/json/car-part/Z1/rear-end.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 左 飞机件
+    window.axios.get('static/json/car-part/Z1/L-aircraft-parts.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        carBody.add(parts);
+    })
+    // 右 飞机件
+    window.axios.get('static/json/car-part/Z1/R-aircraft-parts.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        carBody.add(parts);
+    })
+    // 右 底加强梁
+    window.axios.get('static/json/car-part/Z1/L-bottom-strengthen-girder.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        carBody.add(parts);
+    })
+    // 右 底加强梁
+    window.axios.get('static/json/car-part/Z1/R-bottom-strengthen-girder.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        carBody.add(parts);
+    })
+   
+    /**
+     * Z2.1部分的零件
+     */
+    // 后端 此文件是.obj， 导出时已经修复了y轴，所以只添加到scene中1
+    loadOBJ(['static/json/car-part/Z2.1/Z2.1'], function (obj) {
+        scene.add(obj);
+        store.commit('LOADING_STATUS', true);
+        setTimeout(function () {
+            animate();
+        }, 2000)
+    })
+
+     /**
+     * Z2.2部分
+     */
+    // 侧围外板总成（右）
+    window.axios.get('static/json/car-part/Z2.2/R-side-wall-planking-assembly.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+        
+    })
+    // 侧围外板总成（左）
+    window.axios.get('static/json/car-part/Z2.2/L-side-wall-planking-assembly.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+        
+    })
+    // 后帽台围板
+    window.axios.get('static/json/car-part/Z2.2/After-cap-table-coaming.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+
+    // 其他
+    window.axios.get('static/json/car-part/Z2.2/other.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+
+
+    /**
+     * Z2.3部分
+     */
+    // 顶盖
+    window.axios.get('static/json/car-part/Z2.3/roof.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+        
+    })
+
+    // 后帽台
+    window.axios.get('static/json/car-part/Z2.3/After-cap-table.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+        
+    })
+
+    /**
+     * Z3部分的零件
+     */
+    // 行李箱盖
+    window.axios.get('static/json/car-part/Z3/boot-cover.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 前机盖
+    window.axios.get('static/json/car-part/Z3/front-machine-cover.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 左翼子板
+    window.axios.get('static/json/car-part/Z3/left-sub-board.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 右翼子板
+    window.axios.get('static/json/car-part/Z3/right-sub-board.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 左前门
+    window.axios.get('static/json/car-part/Z3/LF-car-door.json')
+    .then((res) => {
+        var parts = ObjectLoader.parse(res.data);
+        // carBody.add(parts);
+        // var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        mesh.name = 'LF-car-door';
+        scene.add(parts);
+       
+        // 添加点击事件
+        domEvents.addEventListener(parts, 'dblclick', function (ev) {
+            // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
+            // store.dispatch(changeToPartStatus(true))
+            var target = ev.target;
+            scene.children.forEach(function (child) {
+                if (child.name !== target.name && !child.isLight) {
+                    child.visible = false;
+                }
+            })
+            toCarPart(findMesh(target, 'poin-center'), 42);
+        }, false);
+    })
+    // 左后门
+    window.axios.get('static/json/car-part/Z3/LR-car-door.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 右前门
+    window.axios.get('static/json/car-part/Z3/RF-car-door.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
+    // 右前门
+    window.axios.get('static/json/car-part/Z3/RR-car-door.js')
+    .then((res) => {
+        var parts = JSONloader.parse(res.data);
+        var mesh = new Mesh(parts.geometry, parts.materials);
+        scene.add(mesh);
+    })
 })
+
+
 // 整车车身    
 export var carBody = null;
 
@@ -28,13 +241,14 @@ export var carBody = null;
  * @return {void}
  */
 function loadCompleted (moduleCar) {
-
-    // 解析JSON为three的scene;
-    carBody = jsonLoader.parse(moduleCar);
+    // 解析JSON为three的scene;1
+    var parts = ObjectLoader.parse(moduleCar);
+    carBody.add(parts);
     scene.add(carBody);
+    // toCarPart(carBody);
+    // camera.position = findMesh(carBody, 'poin-center').position
     animate();
-    // 通知store加载完成
-    store.commit('LOADING_STATUS', true);
+    
     // 透明的包裹层
     var wrap = null;
     carBody.children.forEach((Mesh) => {
@@ -88,9 +302,10 @@ export function showTarget (group, target, alter) {
 /**
  * 设置相机焦点，聚焦到零部件
  * @param {Mesh} target
+ * @param {Number} z轴
  */
-export var toCarPart = function (target) {
-    if (target === null) {
+export var toCarPart = function (target, z = 0) {
+    if (target === null || target === undefined) {
         console.warn('target 不存在');
         return;
     }
@@ -99,7 +314,7 @@ export var toCarPart = function (target) {
     .to({
         x: target.position.x,
         y: target.position.y,
-        z: target.position.z - 2
+        z: target.position.z - z
     }, 200)
     .start()
     .once('complete', function () {

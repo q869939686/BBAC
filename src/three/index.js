@@ -7,7 +7,7 @@ import { renderer, animate, initRenderer } from './renderer'
 import {
   jsonLoader,
   objLoader,
-  mtlLoader,
+  FBXLoader,
   loadJson
 } from './loaders'
 // controls(鼠标交互)
@@ -18,6 +18,7 @@ import { controls, domEvents } from './controls'
 import './scenes/light'
 
 // assets:3D model,img
+import './scenes/car/car-body'
 export {
   initRenderer,
   animate

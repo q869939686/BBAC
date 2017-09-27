@@ -9,6 +9,7 @@ import store from './store'
 // import AppConfig from './AppConfig'
 import {
     Button,
+    Select,
     Tabs,
     TabPane,
     Input,
@@ -16,6 +17,7 @@ import {
 } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(Select)
 Vue.use(Tabs)
 Vue.use(TabPane)
 Vue.use(Input)

@@ -10,6 +10,7 @@ var controls = new OrbitControls(camera, renderer.domElement);
 
 // 鼠标控制
 controls.addEventListener('change', function (ev) {
+  console.log(camera)
   return;
 })
 controls.maxPolarAngle = Math.PI / 2;

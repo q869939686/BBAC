@@ -11,11 +11,11 @@ camera.position.z = 10;
 // ) 
 // camera.rotation.set( -0,  -1.6,  0);
 camera.position.set(
-    -3.0533396843205836,
-    2.1110786173302802,
-    1.0573666722026434
+    -25.383997199196685,
+    68.47368705261472,
+    94.71213678587537
 )
-camera.rotation.set( -0.20783558173798408,  -0.09429695894176246,  0.019853346558090398)
+camera.rotation.set( -0.6064652641944714,  -0.6233970418493311,  -0.38477697986531856)
 camera.lookAt({x:10,y:50,z:60});
 // 相机的运动
 export var cameraPosition = new Tween(camera.position);
