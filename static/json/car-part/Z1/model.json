@@ -1,0 +1,13 @@
+{
+	"metadata": {
+		"version": 4.5,
+		"type": "Object",
+		"generator": "Object3D.toJSON"
+	},
+	"object": {
+		"uuid": "43519557-6636-41FF-83F1-BBAE5DEF69C3",
+		"type": "Object3D",
+		"name": "Z2.3 ASD.CATProduct",
+		"matrix": [1,0,0,0,0,0,-1,0,0,1,0,0,0,0,0,1]
+	}
+}
