@@ -7,8 +7,13 @@ import router from './router'
 import store from './store'
 
 // import AppConfig from './AppConfig'
+// 引入组件，不然用不了， 不全部引入是因为体积会变大，需要什么在引
 import {
     Button,
+    Col,
+    Option,
+    Row,
+    Radio,
     Select,
     Tabs,
     TabPane,
@@ -17,6 +22,10 @@ import {
 } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(Col)
+Vue.use(Option)
+Vue.use(Row)
+Vue.use(Radio)
 Vue.use(Select)
 Vue.use(Tabs)
 Vue.use(TabPane)

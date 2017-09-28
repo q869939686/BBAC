@@ -8,7 +8,7 @@ const state = {
 // mutations
 const mutations = {
     /**
-     * 处理 changeLoadingStatus
+     * 处理 changeLoadingStatus， 调用此方法，页面就更新
      * @param {object} state 默认回传的
      * @param {object}
      */

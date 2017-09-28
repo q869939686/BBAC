@@ -48,5 +48,9 @@ npm run build --report
 ```
 
 
-##其他注意事项
-3dmax导入catia时 Convert to Mesh 设为off ，不然模型和原有的会大出很多倍
+##
+布局
+布局与bootstrap 相似，bootstrap 12格， element ui 24格
+
+d3组件封装
+先写一个function封装好

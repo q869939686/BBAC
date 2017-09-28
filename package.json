@@ -13,6 +13,7 @@
     "dependencies": {
         "axios": "^0.16.2",
         "babel-polyfill": "^6.26.0",
+        "d3": "^4.10.2",
         "element-ui": "^1.4.3",
         "es6-tween": "^3.3.0",
         "lodash": "^4.17.4",

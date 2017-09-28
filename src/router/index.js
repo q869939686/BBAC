@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-import Home from '@/views/home/home.vue'
+// 用 views目录引过来
+import QView from '@/views/Q-View/'
 Vue.use(Router)
 
 export default new Router({
@@ -12,9 +12,23 @@ export default new Router({
         // 因为当钩子执行前，组件实例还没被创建
         next();
     },
-    routes: [{
-        path: '/',
-        name: 'Home',
-        component: Home
-    }]
+    routes: [
+        {
+            path: '/',
+            name: 'QView',
+            component: QView
+        },
+        {
+            path: '/Q-View',
+            name: 'QView',
+            component: QView
+        },
+        {
+            path: '/xxx',
+            name: 'xxx',
+            component: { // 其中一种写法
+                template: '<div>2222</div>'
+            }
+        }
+    ]
 })

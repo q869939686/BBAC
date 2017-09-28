@@ -15,7 +15,7 @@ var isAnimate = true; // 假设不在当前页面了就不渲染
 var initRenderer = function (el) {
     canvas = el
     renderer.setSize(window.innerWidth,window.innerHeight)
-    renderer.setClearColor(0x101010, 1.0)
+    renderer.setClearColor(0xFFFFFF, 1.0)
     window.addEventListener( 'resize', onWindowResize, false )
     renderer.render(scene, camera);
     return renderer
