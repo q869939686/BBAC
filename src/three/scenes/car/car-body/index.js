@@ -163,32 +163,32 @@ window.axios.get('static/json/car-part/Z1/model.json')
     /**
      * Z3部分的零件
      */
-    // 行李箱盖
-    window.axios.get('static/json/car-part/Z3/boot-cover.js')
-    .then((res) => {
-        var parts = JSONloader.parse(res.data);
-        var mesh = new Mesh(parts.geometry, parts.materials);
-        scene.add(mesh);
-        parts = null;
-        mesh = null;
-    })
-    // 前机盖
-    window.axios.get('static/json/car-part/Z3/front-machine-cover.js')
-    .then((res) => {
-        var parts = JSONloader.parse(res.data);
-        console.log(parts)
-        parts.materials.forEach(function (material) {
-            material.color = {
-                b: 1,
-                g: 1,
-                r: 1
-            }
-        })
-        var mesh = new Mesh(parts.geometry, parts.materials);
-        scene.add(mesh);
-        parts = null;
-        mesh = null;
-    })
+    // // 行李箱盖
+    // window.axios.get('static/json/car-part/Z3/boot-cover.js')
+    // .then((res) => {
+    //     var parts = JSONloader.parse(res.data);
+    //     var mesh = new Mesh(parts.geometry, parts.materials);
+    //     scene.add(mesh);
+    //     parts = null;
+    //     mesh = null;
+    // })
+    // // 前机盖
+    // window.axios.get('static/json/car-part/Z3/front-machine-cover.js')
+    // .then((res) => {
+    //     var parts = JSONloader.parse(res.data);
+    //     console.log(parts)
+    //     parts.materials.forEach(function (material) {
+    //         material.color = {
+    //             b: 1,
+    //             g: 1,
+    //             r: 1
+    //         }
+    //     })
+    //     var mesh = new Mesh(parts.geometry, parts.materials);
+    //     scene.add(mesh);
+    //     parts = null;
+    //     mesh = null;
+    // })
     // // 左翼子板
     // window.axios.get('static/json/car-part/Z3/left-sub-board.js')
     // .then((res) => {
@@ -219,7 +219,7 @@ window.axios.get('static/json/car-part/Z1/model.json')
         setTimeout(function () {
             store.commit('LOADING_STATUS', true);
             Cache.clear();
-            // animate();
+            animate();
         }, 1000)
         // 添加点击事件
         
