@@ -1,15 +1,19 @@
 // vuex 得先引用进来才能调
 import store from '@/store';
+import AppConfig from '@/AppConfig';
 // three
-import { 
+import {
+    Object3D,
     Vector3,
+    Matrix4,
     Mesh,
     BoxBufferGeometry,
     MeshStandardMaterial,
-    Cache } from 'three';
+    Cache,
+    Color } from 'three';
 import scene from '@/three/scene';
 import camera, { cameraPosition } from '@/three/camera';
-import {animate} from '@/three/renderer';
+import {animate, renderer} from '@/three/renderer';
 import {
     ObjectLoader,
     JSONloader,
@@ -20,14 +24,29 @@ import { domEvents, controls } from '@/three/controls';
 // model
 // import { carPart } from '../car-parts';
 
+// utils
 import findMesh from '@/utils/three/mesh/findMesh';
 
-// 异步加载模型1
+// 异步加载模型
 
 window.axios.get('static/json/car-part/Z1/model.json')
 .then((res) => {
     // model.json只是修复Y轴向↑
     carBody = ObjectLoader.parse(res.data);
+    // console.log(carBody)
+    // var carBody2 = new Object3D();
+    // var matrix = new Matrix4();
+    // matrix.set(1,0,0,0,0,0,-1,0,0,1,0,0,0,0,0,1) 
+    // carBody2.matrix = matrix;
+    // console.log(carBody2)
+    // 先清空一遍, 估计是热加载不支持scene, 会一直叠加，会变得无比的卡
+    if (AppConfig.isDev) {
+        scene.children.forEach(function (child) {
+            if (!child.isLight) {
+                scene.remove(child);
+            }
+        })
+    }
     scene.add(carBody);
     // 调整控制中心
     controls.target = new Vector3(carBody.position.x + 61, carBody.position.y, carBody.position.z - 4);
@@ -35,275 +54,96 @@ window.axios.get('static/json/car-part/Z1/model.json')
     controls.update();
     return true;
 }).then(function () {
-    /**
-     * Z1部分的零件
-     */
-    // // 前端
-    // window.axios.get('static/json/car-part/Z1/front-end.js')
-    // .then((res) => {
-    //     // var parts = ObjectLoader.parse(res.data);
-    //     // carBody.add(parts);
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     mesh.name = 'front-end';
-    //     scene.add(mesh);
-    // })
-    // // 主底板
-    // window.axios.get('static/json/car-part/Z1/main-floor-board.json')
-    // .then((res) => {
-    //     var parts = ObjectLoader.parse(res.data);
-    //     carBody.add(parts);
-    // })
-    // // 后端
-    // window.axios.get('static/json/car-part/Z1/rear-end.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    // })
-    // // 左 飞机件
-    // window.axios.get('static/json/car-part/Z1/L-aircraft-parts.json')
-    // .then((res) => {
-    //     var parts = ObjectLoader.parse(res.data);
-    //     carBody.add(parts);
-    // })
-    // // 右 飞机件
-    // window.axios.get('static/json/car-part/Z1/R-aircraft-parts.json')
-    // .then((res) => {
-    //     var parts = ObjectLoader.parse(res.data);
-    //     carBody.add(parts);
-    // })
-    // // 右 底加强梁
-    // window.axios.get('static/json/car-part/Z1/L-bottom-strengthen-girder.json')
-    // .then((res) => {
-    //     var parts = ObjectLoader.parse(res.data);
-    //     carBody.add(parts);
-    // })
-    // // 右 底加强梁
-    // window.axios.get('static/json/car-part/Z1/R-bottom-strengthen-girder.json')
-    // .then((res) => {
-    //     var parts = ObjectLoader.parse(res.data);
-    //     carBody.add(parts);
-    // })
-   
-    /**
-     * Z2.1部分的零件
-     */
-    // window.axios.get('static/json/car-part/Z2.1/Z2.1.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    // })
-     /**
-     * Z2.2部分
-     */
-    // // 侧围外板总成（右）
-    // window.axios.get('static/json/car-part/Z2.2/R-side-wall-planking-assembly.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // // 侧围外板总成（左）
-    // window.axios.get('static/json/car-part/Z2.2/L-side-wall-planking-assembly.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // // 后帽台围板
-    // window.axios.get('static/json/car-part/Z2.2/After-cap-table-coaming.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
+    Promise.all([
+        // // z1部分
+        loaderCarPartPromise('Z1/front-end.js', 'front-end', {id: 'A2136207400'}), // 前端 
+        loaderCarPartPromise('Z1/main-floor-board.js', 'main-floor-board', {id: 'A2136100078'}), // 主底板
+        loaderCarPartPromise('Z1/rear-end.js', 'rear-end', {id: 'A2136109201'}), // 后端
+        loaderCarPartPromise('Z1/L-bottom-strengthen-girder.js', 'L-bottom-strengthen-girder', {id: 'A2136108502'}), // 左 底加强梁
+        loaderCarPartPromise('Z1/R-bottom-strengthen-girder.js', 'R-bottom-strengthen-girder', {id: 'A2136108602'}), // 右 底加强梁
+        loaderCarPartPromise('Z1/A2136108401.js', 'A2136108401', {id: 'A2136108401'}),// 地板加强板（左
+        loaderCarPartPromise('Z1/A2136101410.js', 'A2136101410', {id: 'A2136101410'}),// 地板加强板（右
+        // // z2.1部分
+        loaderCarPartPromise('Z2.1/A2136200286.js', 'A2136200286', {id: 'A2136200286'}), // 仪表台横梁
+        loaderCarPartPromise('Z2.1/A2136260029.js', 'A2136260029', {id: 'A2136260029'}), // 仪表台小件(左)
+        loaderCarPartPromise('Z2.1/A2136260129.js', 'A2136260129', {id: 'A2136260129'}), // 仪表台小件(右)
+        loaderCarPartPromise('Z2.1/A2136303901.js', 'A2136303901', {id: 'A2136303901'}), // 侧围内板（左）
+        loaderCarPartPromise('Z2.1/A2136304001.js', 'A2136304001', {id: 'A2136304001'}), // 侧围内板（右）
+        loaderCarPartPromise('Z2.1/A2136362900.js', 'A2136362900', {id: 'A2136362900'}), // Z2.1小件（左）
+        loaderCarPartPromise('Z2.1/A2136363000.js', 'A2136363000', {id: 'A2136363000'}), // Z2.1小件（右）
+        loaderCarPartPromise('Z2.1/A2136401800.js', 'A2136401800', {id: 'A2136401800'}), // 后围板
 
-    // // 其他
-    // window.axios.get('static/json/car-part/Z2.2/other.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-
-
-    /**
-     * Z2.3部分
-     */
-    // // 顶盖
-    // window.axios.get('static/json/car-part/Z2.3/roof.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-
-    // // 后帽台
-    // window.axios.get('static/json/car-part/Z2.3/After-cap-table.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-
-    /**
-     * Z3部分的零件
-     */
-    // // 行李箱盖
-    // window.axios.get('static/json/car-part/Z3/boot-cover.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // // 前机盖
-    // window.axios.get('static/json/car-part/Z3/front-machine-cover.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     console.log(parts)
-    //     parts.materials.forEach(function (material) {
-    //         material.color = {
-    //             b: 1,
-    //             g: 1,
-    //             r: 1
-    //         }
-    //     })
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // // 左翼子板
-    // window.axios.get('static/json/car-part/Z3/left-sub-board.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // // 右翼子板
-    // window.axios.get('static/json/car-part/Z3/right-sub-board.js')
-    // .then((res) => {
-    //     var parts = JSONloader.parse(res.data);
-    //     var mesh = new Mesh(parts.geometry, parts.materials);
-    //     scene.add(mesh);
-    //     parts = null;
-    //     mesh = null;
-    // })
-    // 左前门
-    window.axios.get('static/json/car-part/Z3/LF-car-door1.json')
-    .then((res) => {
-        var parts = ObjectLoader.parse(res.data);
-        // carBody.add(parts);
-        // var parts = JSONloader.parse(res.data);
-        // var mesh = new Mesh(parts.geometry, parts.materials);
-        parts.name = 'LF-car-door';
-        scene.add(parts);
-        setTimeout(function () {
-            store.commit('LOADING_STATUS', true);
-            Cache.clear();
-            animate();
-        }, 1000)
-        // 添加点击事件
+        // // z2.2部分
+        loaderCarPartPromise('Z2.2/R-side-wall-planking-assembly.js', 'R-side-wall-planking-assembly', {id: 'A2136303001'}), // 侧围外板总成（右）
+        loaderCarPartPromise('Z2.2/L-side-wall-planking-assembly.js', 'L-side-wall-planking-assembly', {id: 'A2136302901'}), // 侧围外板总成（左）
+        loaderCarPartPromise('Z2.2/After-cap-table-coaming.js', 'After-cap-table-coaming', {id: 'A2136401100'}), // 后帽台围板
+        loaderCarPartPromise('Z2.2/A2136500800.js', 'A2136500800', {id: 'A2136500800'}), // 天窗支架
+        loaderCarPartPromise('Z2.2/other.js', 'other', {}), // 其他
+        // // z2.3部分
+        loaderCarPartPromise('Z2.3/roof.js', 'roof', {id: 'A2136570700'}, carBody), // 顶盖
+        loaderCarPartPromise('Z2.3/After-cap-table.js', 'After-cap-table', {id: 'A2136404100'}), // 后帽台
+        // // z3部分
+        loaderCarPartPromise('Z3/boot-cover.js', 'boot-cover', {id: 'A2137500900'}),  // 行李箱盖
+        loaderCarPartPromise('Z3/front-machine-cover.js', 'front-machine-cover', {id: 'A2138800457'}), // 前机盖
+        loaderCarPartPromise('Z3/left-sub-board.js', 'left-sub-board', {id: 'A2138800106'}), // 左翼子板
+        loaderCarPartPromise('Z3/right-sub-board.js', 'right-sub-board', {id: 'A2138800006'}),  // 右翼子板
+        loaderCarPartPromise('Z3/LF-car-door.js', 'LF-car-door', {id: 'A2137200105'}), // 左前门
+        loaderCarPartPromise('Z3/LR-car-door.js', 'LR-car-door', {id: 'A2137302902'}), // // 左后门
+        loaderCarPartPromise('Z3/RF-car-door.js', 'RF-car-door', {id: 'A2137200205'}), // // 右前门
+        loaderCarPartPromise('Z3/RR-car-door.js', 'RR-car-door', {id: 'A2137303002'}), // // 右后门
         
-        domEvents.addEventListener(parts, 'dblclick', function (ev) {
-            // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
-            // store.dispatch(changeToPartStatus(true))
-            var target = ev.target;
-            var isToPart = store.getters.isToPart;
-            if (!isToPart) {
-                scene.children.forEach(function (child) {
-                    if (child.name !== target.name && !child.isLight) {
-                        child.visible = false;
+    ])
+    // 全部加载完成才进这里
+    .then(function (res) {
+        store.commit('LOADING_STATUS', true);
+        Cache.clear();
+        // setColorById('A2137200105', '#CF421D');
+        renderer.render(scene, camera);
+        animate();
+        window.axios.get('static/json/info.json')
+        .then(function (res) {
+            var data = res.data;
+            var infoData = {};
+            var color = [
+                {color: '#F63A38', value: 0.05},
+                {color: '#EE7225', value: 0.15},
+                {color: '#DFDA42', value: 0.25},
+                {color: '#B7DD4B', value: 0.35},
+                {color: '#9BE617', value: 0.45},
+            ];
+            data.forEach(function (item) {
+                if (infoData[item[4]] === undefined) {
+                    infoData[item[4]] = {
+                        value: item[8] * 100
                     }
-                })
-                toCarPart(findMesh(target, 'poin-center'), 42);
-                store.commit('TO_PART', true);
-            }
-        }, false);
-        return parts;
-    }).then(function (parentParts) {
+                } else {
+                    infoData[item[4]] = {
+                        value: item[8] + infoData[item[4]].value * 100
+                    }
+                }
+            });
 
-        // 加载点
-        window.axios.get('static/json/car-part/Z3/point/LF-car-door-point.json')
-        .then((res) => {
-            var parts = ObjectLoader.parse(res.data);
-            // var mesh = new Mesh(parts.geometry, parts.materials);
-            parentParts.add(parts);
-            // 给所有点加事件
-            var index = 0;
-            parts.children.forEach(function (point) {
-                domEvents.addEventListener(point, 'click', function (ev) {
-                    // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
-                    // store.dispatch(changeToPartStatus(true))
-                    var target = ev.target;
-                    var isToPart = store.getters.isToPart;
-                    if (isToPart) {
-                        // 模拟数据变化
-                        var data = [
-                            {month: 'Q1-2016', apples: 3840, bananas: 1920, cherries: -1960, dates: -400},
-                            {month: 'Q2-2016', apples: 1600, bananas: 1440, cherries: -960, dates: -400},
-                            {month: 'Q3-2016', apples:  640, bananas:  960, cherries: -640, dates: -600},
-                            {month: 'Q4-2016', apples:  320, bananas:  480, cherries: -640, dates: -400}
-                        ]
-                        var data2 = [
-                            {month: 'Q1-2016', apples: 1232, bananas: 2324, cherries: -260, dates: -343},
-                            {month: 'Q2-2016', apples: 343, bananas: 3444, cherries: -134, dates: -400},
-                            {month: 'Q3-2016', apples:  1324, bananas:  343, cherries: -640, dates: -434},
-                            {month: 'Q4-2016', apples:  2, bananas:  545, cherries: -640, dates: -43}
-                        ]
-                        // 我再这里调用了， 并用两个数据模拟
-                        store.commit('GET_CHART_DATA', (index % 2 === 0) ? data : data2)
-                        index++;
-                    }
-                }, false);
-            })
+            for (var id in infoData) {
+                var item = infoData[id];
+                var color = null;
+                console.log(item.value)
+                if (item.value < 0.05) {
+                    color = '#F63A38';
+                } else if (item.value < 0.15) {
+                    color = '#EE7225';
+                } else if (item.value < 0.25) {
+                    color = '#DFDA42';
+                } else if (item.value < 0.35) {
+                    color = '#B7DD4B'
+                } else if (item.value > 0.35) {
+                    color = '#9BE617'
+                }
+                setColorById(id, color)
+            }
+            
         })
     })
-    // 左后门
-    window.axios.get('static/json/car-part/Z3/LR-car-door.js')
-    .then((res) => {
-        var parts = JSONloader.parse(res.data);
-        var mesh = new Mesh(parts.geometry, parts.materials);
-        scene.add(mesh);
-        parts = null;
-        mesh = null;
-    })
-    // 右前门
-    window.axios.get('static/json/car-part/Z3/RF-car-door.js')
-    .then((res) => {
-        var parts = JSONloader.parse(res.data);
-        var mesh = new Mesh(parts.geometry, parts.materials);
-        scene.add(mesh);
-        parts = null;
-        mesh = null;
-    })
-    // 右前门
-    window.axios.get('static/json/car-part/Z3/RR-car-door.js')
-    .then((res) => {
-        var parts = JSONloader.parse(res.data);
-        var mesh = new Mesh(parts.geometry, parts.materials);
-        scene.add(mesh);
-        parts = null;
-        mesh = null;
-    })
+
 })
 
 
@@ -311,49 +151,124 @@ window.axios.get('static/json/car-part/Z1/model.json')
 export var carBody = null;
 
 /**
- * 模型加载完成处理
- * @param {Object} carBody model
- * @return {void}
+ * 加载模型
+ * @param {String} url 
+ * @param {String}
+ * @param {Object} userData
+ * @param {THREE.Scene | THREE.Mesh} scene |  carBody
  */
-function loadCompleted (moduleCar) {
-    // 解析JSON为three的scene;1
-    var parts = ObjectLoader.parse(moduleCar);
-    carBody.add(parts);
-    scene.add(carBody);
-    // toCarPart(carBody);
-    // camera.position = findMesh(carBody, 'poin-center').position
-    animate();
-    
-    // 透明的包裹层
-    var wrap = null;
-    carBody.children.forEach((Mesh) => {
-        if (Mesh.name === 'mouseout') {
-            wrap = Mesh;
-            domEvents.addEventListener(wrap, 'mouseout', function (event) {
-                if (event.intersect === undefined) {
-                    showTarget(carBody, null, 'out');
-                    wrap.material.transparent = true;
-                    wrap.material.opacity = 0;
-                }
-            }, false);
-            return false;
+function loaderCarPartPromise (url, name, userData, parent) {
+    var res = /\.[a-z]+$/.exec(url); // 目前只匹配json和js格式
+    var type = res !== null ? res[0] : null;
+    return window.axios.get('static/json/car-part/' + url)
+    .then((res) => {
+        if (type && type === '.js') {
+            var data = JSONloader.parse(res.data);
+            // 去色
+            loseColor(data.materials);
+            var parts = new Mesh(data.geometry, data.materials);
+            parts.name = name; // 加name
+            parts.userData = userData; // 加自定义数据
+            scene.add(parts);
+        } else if (type && type === '.json') {
+            var parts = ObjectLoader.parse(res.data);
+            parts.name = name; // 加name
+            parts.userData = userData; // 加自定义数据
+            // 去色
+            deepLoseColor(parts);
+            // 某些文件(json)得包一层，为了转换Y轴
+            if (parent !== undefined) {
+                parent.add(parts)
+                scene.add(parent);
+            } else {
+                scene.add(parts);
+            }
         }
-        domEvents.addEventListener(Mesh, 'mouseover', function (event) {
-            showTarget(carBody, event.target, 'over');
-            wrap.material.opacity = 0;
-        }, false);
-        domEvents.addEventListener(Mesh, 'dblclick', function (ev) {
-            if (ev.target.name === 'part_27') {
-                carPart.visible = true;
-                carBody.visible = false;
-                toCarPart(findMesh(carPart, 'part_wrap'));
-                // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
-                store.dispatch(changeToPartStatus(true))
+
+        var index = 0;
+        // add Event
+        domEvents.addEventListener(parts, 'dblclick', function (ev) {
+            var target = ev.target;
+            var isToPart = store.getters.isToPart;
+            // 看局部部件
+            if (!isToPart) {
+                scene.children.forEach(function (child) {
+                    if (child.name !== target.name && !child.isLight) {
+                        child.visible = false;
+                    }
+                })
+                var pointCenter = findMesh(target, 'poin-center');
+                store.commit('TO_PART', true);
+                store.commit('CAR_PARTS_INFO', {
+                    id: 'No. ' +　target.userData.id,
+                    name: target.name
+                });
+                if (pointCenter) {
+                    toCarPart(target, 42);
+                    // store.commit('TO_PART', true);
+                }
+            } else {
+                // 局部状态下，发生点击事件
+                // 模拟数据变化
+                var data = [
+                    {month: 'Q1-2016', apples: 3840, bananas: 1920, cherries: -1960, dates: -400},
+                    {month: 'Q2-2016', apples: 1600, bananas: 1440, cherries: -960, dates: -400},
+                    {month: 'Q3-2016', apples:  640, bananas:  960, cherries: -640, dates: -600},
+                    {month: 'Q4-2016', apples:  320, bananas:  480, cherries: -640, dates: -400}
+                ]
+                var data2 = [
+                    {month: 'Q1-2016', apples: 1232, bananas: 2324, cherries: -260, dates: -343},
+                    {month: 'Q2-2016', apples: 343, bananas: 3444, cherries: -134, dates: -400},
+                    {month: 'Q3-2016', apples:  1324, bananas:  343, cherries: -640, dates: -434},
+                    {month: 'Q4-2016', apples:  2, bananas:  545, cherries: -640, dates: -43}
+                ]
+                // 我再这里调用了， 并用两个数据模拟
+                store.commit('GET_CHART_DATA', (index % 2 === 0) ? data : data2)
+                index++;
             }
         }, false);
-    });
+        return parts;
+    })
+    .then(function (parts) {
+        // 加载点
+        // window.axios.get('static/json/car-part/Z3/point/LF-car-door-point.json')
+        // .then((res) => {
+        //     addPointEvent(ObjectLoader, parentParts, res)
+        // })
+    })
 }
 /**
+ * 去颜色
+ * @param {Material} Material
+ * @param {?Color} 默认0x9898B9
+ */
+var loseColor = function (materials, color) {
+    var color = new Color( color || 0x9898B9 );
+
+    if (Array.isArray(materials)) {
+        materials.forEach(function (material) {
+            material.color = color;
+        })
+    } else {
+        materials.color = color;
+    }
+}
+/**
+ * 递归去色
+ * @param {Object3D} Object3D
+ * @param {?Color}
+ */
+var deepLoseColor = function (Object3D, Color) {
+    if (Object3D.material) {
+        loseColor(Object3D.material);
+    }
+    if (Object3D.children.length > 0) {
+        Object3D.children.forEach(function (child) {
+            deepLoseColor(child, Color);
+        })
+    } 
+}
+ /**
  * 非选中目标透明
  * @param {Group} group not material, must has children
  * @param {Mesh} target 选中目标 when alter='out' target = null
@@ -397,4 +312,61 @@ export var toCarPart = function (target, z = 0) {
         controls.autoRotate = true;
         controls.update();
     });
+}
+
+/**
+ * 给焊点加事件
+ * @param {ObjectLoader | JSONLoader} loader 
+ * @param {Mesh | Object3d} parentParts 
+ * @param {Object} response,
+ * @param {String} 焊点类型
+ * @return {void}
+ */
+var addPointEvent = function (loader, parentParts, res, type) {
+    var parts = loader.parse(res.data);
+    // var mesh = new Mesh(parts.geometry, parts.materials);
+    parentParts.add(parts);
+    // 给所有点加事件
+    var index = 0;
+    parts.children.forEach(function (point) {
+        domEvents.addEventListener(point, 'click', function (ev) {
+            // 通知store 现在的状态是到零件了，页面会做出相关响应(暂时是展示back home小图标)
+            // store.dispatch(changeToPartStatus(true))
+            var target = ev.target;
+            var isToPart = store.getters.isToPart;
+            if (isToPart) {
+                // 模拟数据变化
+                var data = [
+                    {month: 'Q1-2016', apples: 3840, bananas: 1920, cherries: -1960, dates: -400},
+                    {month: 'Q2-2016', apples: 1600, bananas: 1440, cherries: -960, dates: -400},
+                    {month: 'Q3-2016', apples:  640, bananas:  960, cherries: -640, dates: -600},
+                    {month: 'Q4-2016', apples:  320, bananas:  480, cherries: -640, dates: -400}
+                ]
+                var data2 = [
+                    {month: 'Q1-2016', apples: 1232, bananas: 2324, cherries: -260, dates: -343},
+                    {month: 'Q2-2016', apples: 343, bananas: 3444, cherries: -134, dates: -400},
+                    {month: 'Q3-2016', apples:  1324, bananas:  343, cherries: -640, dates: -434},
+                    {month: 'Q4-2016', apples:  2, bananas:  545, cherries: -640, dates: -43}
+                ]
+                // 我再这里调用了， 并用两个数据模拟
+                store.commit('GET_CHART_DATA', (index % 2 === 0) ? data : data2)
+                index++;
+            }
+        }, false);
+    })
+}
+
+/**
+ * 通过id设置颜色 id in userData
+ * @param {String} id 
+ * @param {Color} color 
+ */
+export var setColorById = function (id, color) {
+    scene.children.some(function (child) {
+        if (child.userData.id === id) {
+            loseColor(child.material, color);
+            return true;
+        }
+        return false;
+    })
 }

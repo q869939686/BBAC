@@ -45,7 +45,7 @@ export default {
     // 监听data变化， 有变化就更新图表
     watch: {
         data: function (newData) {
-            console.log('更新图表')
+            console.log('更新图表', newData)
             // 
             initChart(this.$refs.svg, newData, this.keys);
         }

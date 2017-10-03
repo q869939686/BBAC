@@ -15,7 +15,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'QView',
+            name: 'home',
             component: QView
         },
         {
