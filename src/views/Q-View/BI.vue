@@ -3,13 +3,26 @@
         <el-row>
             <el-col :span="8">
                 <div style="position: relative" ref="canvas">
-                    <KPI style="display: inline-block; left: 5px;top:2px; width: 35px"/>
+                    <KPI style="display: inline-block; left: 5px;top:2px; width: 35px;margin-top: 48px;"/>
                     <img ref="img" :src="carImg" width="80%" height="150%"/>
                 </div>
             </el-col>
             <el-col :span="8">
+                <ChartBar :data="[20,30,40,50,30,10]"/>
             </el-col>
             <el-col :span="8">
+                <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8">
+                <ChartBar :data="[20,30,40,50,30,10]"/>
+            </el-col>
+            <el-col :span="8">
+                <ChartBar :data="[20,30,40,50,30,10]"/>
+            </el-col>
+            <el-col :span="8">
+                <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
             </el-col>
         </el-row>
     </div>
@@ -18,10 +31,13 @@
 import { mapState } from 'vuex'
 // components
 import KPI from '@/components/KPI'
+import ChartBar from '@/components/charts/chart-bar'
+
 export default {
     name: 'BI',
     components: {
-        KPI
+        KPI,
+        ChartBar
     },
     data () {
         return {}
@@ -44,7 +60,9 @@ export default {
         // console.log(this.domElement.toDataURL('image/jpeg'))
     },
     methods: {
-        a () {}
+        a () {
+            // 请求
+        }
     }
 }
 </script>

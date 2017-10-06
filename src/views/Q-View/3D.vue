@@ -171,7 +171,7 @@ import camera, { cameraPosition, changeCamera, cameraZoom } from '@/three/camera
 import scene from '@/three/scene';
 // components
 import Loading from '@/components/loading'
-import ChartBar from '@/components/charts/chart-bar'
+
 import KPI from '@/components/KPI'
 import SpearationLine from '@/components/separation-line'
 import ScrollBar from 'vue2-scrollbar'
@@ -184,7 +184,6 @@ export default {
     components: {
         Loading,
         CarPartTree,
-        ChartBar,
         'kpi': KPI,
         SpearationLine,
         ScrollBar,

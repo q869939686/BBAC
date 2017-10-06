@@ -34,9 +34,7 @@ const mutations = {
      */
     updateCarImg (state) {
         if (state.domElement !== null) {
-            console.log(state.domElement.toDataURL('image/jpeg'))
             state.carImg = state.domElement.toDataURL('image/jpeg')
-            console.log(state.carImg)
         }
     }
 }
