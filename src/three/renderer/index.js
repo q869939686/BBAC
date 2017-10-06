@@ -3,7 +3,9 @@ import scene from '../scene'
 import { WebGLRenderer } from 'three'
 import { Tween, update } from 'es6-tween'
 
-var renderer = new WebGLRenderer();
+var renderer = new WebGLRenderer({
+    preserveDrawingBuffer: true // 是否保存绘图缓冲，若设为true，则可以提取canvas绘图的缓冲。
+});
 
 var canvas = null;
 var isAnimate = true; // 假设不在当前页面了就不渲染

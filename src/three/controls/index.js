@@ -10,7 +10,7 @@ var controls = new OrbitControls(camera, renderer.domElement);
 
 // 鼠标控制
 controls.addEventListener('change', function (ev) {
-  
+  // console.log(camera)
   // renderer.render(scene, camera);
   return;
 })

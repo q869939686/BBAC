@@ -63,34 +63,34 @@ window.axios.get('static/json/car-part/Z1/model.json')
         loaderCarPartPromise('Z1/R-bottom-strengthen-girder.js', 'R-bottom-strengthen-girder', {id: 'A2136108602'}), // 右 底加强梁
         loaderCarPartPromise('Z1/A2136108401.js', 'A2136108401', {id: 'A2136108401'}),// 地板加强板（左
         loaderCarPartPromise('Z1/A2136101410.js', 'A2136101410', {id: 'A2136101410'}),// 地板加强板（右
-        // // z2.1部分
-        loaderCarPartPromise('Z2.1/A2136200286.js', 'A2136200286', {id: 'A2136200286'}), // 仪表台横梁
-        loaderCarPartPromise('Z2.1/A2136260029.js', 'A2136260029', {id: 'A2136260029'}), // 仪表台小件(左)
-        loaderCarPartPromise('Z2.1/A2136260129.js', 'A2136260129', {id: 'A2136260129'}), // 仪表台小件(右)
-        loaderCarPartPromise('Z2.1/A2136303901.js', 'A2136303901', {id: 'A2136303901'}), // 侧围内板（左）
-        loaderCarPartPromise('Z2.1/A2136304001.js', 'A2136304001', {id: 'A2136304001'}), // 侧围内板（右）
-        loaderCarPartPromise('Z2.1/A2136362900.js', 'A2136362900', {id: 'A2136362900'}), // Z2.1小件（左）
-        loaderCarPartPromise('Z2.1/A2136363000.js', 'A2136363000', {id: 'A2136363000'}), // Z2.1小件（右）
-        loaderCarPartPromise('Z2.1/A2136401800.js', 'A2136401800', {id: 'A2136401800'}), // 后围板
+        // // // z2.1部分
+        // loaderCarPartPromise('Z2.1/A2136200286.js', 'A2136200286', {id: 'A2136200286'}), // 仪表台横梁
+        // loaderCarPartPromise('Z2.1/A2136260029.js', 'A2136260029', {id: 'A2136260029'}), // 仪表台小件(左)
+        // loaderCarPartPromise('Z2.1/A2136260129.js', 'A2136260129', {id: 'A2136260129'}), // 仪表台小件(右)
+        // loaderCarPartPromise('Z2.1/A2136303901.js', 'A2136303901', {id: 'A2136303901'}), // 侧围内板（左）
+        // loaderCarPartPromise('Z2.1/A2136304001.js', 'A2136304001', {id: 'A2136304001'}), // 侧围内板（右）
+        // loaderCarPartPromise('Z2.1/A2136362900.js', 'A2136362900', {id: 'A2136362900'}), // Z2.1小件（左）
+        // loaderCarPartPromise('Z2.1/A2136363000.js', 'A2136363000', {id: 'A2136363000'}), // Z2.1小件（右）
+        // loaderCarPartPromise('Z2.1/A2136401800.js', 'A2136401800', {id: 'A2136401800'}), // 后围板
 
-        // // z2.2部分
-        loaderCarPartPromise('Z2.2/R-side-wall-planking-assembly.js', 'R-side-wall-planking-assembly', {id: 'A2136303001'}), // 侧围外板总成（右）
-        loaderCarPartPromise('Z2.2/L-side-wall-planking-assembly.js', 'L-side-wall-planking-assembly', {id: 'A2136302901'}), // 侧围外板总成（左）
-        loaderCarPartPromise('Z2.2/After-cap-table-coaming.js', 'After-cap-table-coaming', {id: 'A2136401100'}), // 后帽台围板
-        loaderCarPartPromise('Z2.2/A2136500800.js', 'A2136500800', {id: 'A2136500800'}), // 天窗支架
-        loaderCarPartPromise('Z2.2/other.js', 'other', {}), // 其他
-        // // z2.3部分
-        loaderCarPartPromise('Z2.3/roof.js', 'roof', {id: 'A2136570700'}, carBody), // 顶盖
-        loaderCarPartPromise('Z2.3/After-cap-table.js', 'After-cap-table', {id: 'A2136404100'}), // 后帽台
-        // // z3部分
-        loaderCarPartPromise('Z3/boot-cover.js', 'boot-cover', {id: 'A2137500900'}),  // 行李箱盖
-        loaderCarPartPromise('Z3/front-machine-cover.js', 'front-machine-cover', {id: 'A2138800457'}), // 前机盖
+        // // // z2.2部分
+        // loaderCarPartPromise('Z2.2/R-side-wall-planking-assembly.js', 'R-side-wall-planking-assembly', {id: 'A2136303001'}), // 侧围外板总成（右）
+        // loaderCarPartPromise('Z2.2/L-side-wall-planking-assembly.js', 'L-side-wall-planking-assembly', {id: 'A2136302901'}), // 侧围外板总成（左）
+        // loaderCarPartPromise('Z2.2/After-cap-table-coaming.js', 'After-cap-table-coaming', {id: 'A2136401100'}), // 后帽台围板
+        // loaderCarPartPromise('Z2.2/A2136500800.js', 'A2136500800', {id: 'A2136500800'}), // 天窗支架
+        // loaderCarPartPromise('Z2.2/other.js', 'other', {}), // 其他
+        // // // z2.3部分
+        // loaderCarPartPromise('Z2.3/roof.js', 'roof', {id: 'A2136570700'}, carBody), // 顶盖
+        // loaderCarPartPromise('Z2.3/After-cap-table.js', 'After-cap-table', {id: 'A2136404100'}), // 后帽台
+        // // // z3部分
+        // loaderCarPartPromise('Z3/boot-cover.js', 'boot-cover', {id: 'A2137500900'}),  // 行李箱盖
+        // loaderCarPartPromise('Z3/front-machine-cover.js', 'front-machine-cover', {id: 'A2138800457'}), // 前机盖
         loaderCarPartPromise('Z3/left-sub-board.js', 'left-sub-board', {id: 'A2138800106'}), // 左翼子板
         loaderCarPartPromise('Z3/right-sub-board.js', 'right-sub-board', {id: 'A2138800006'}),  // 右翼子板
-        loaderCarPartPromise('Z3/LF-car-door.js', 'LF-car-door', {id: 'A2137200105'}), // 左前门
-        loaderCarPartPromise('Z3/LR-car-door.js', 'LR-car-door', {id: 'A2137302902'}), // // 左后门
-        loaderCarPartPromise('Z3/RF-car-door.js', 'RF-car-door', {id: 'A2137200205'}), // // 右前门
-        loaderCarPartPromise('Z3/RR-car-door.js', 'RR-car-door', {id: 'A2137303002'}), // // 右后门
+        // loaderCarPartPromise('Z3/LF-car-door.js', 'LF-car-door', {id: 'A2137200105'}), // 左前门
+        // loaderCarPartPromise('Z3/LR-car-door.js', 'LR-car-door', {id: 'A2137302902'}), // // 左后门
+        // loaderCarPartPromise('Z3/RF-car-door.js', 'RF-car-door', {id: 'A2137200205'}), // // 右前门
+        // loaderCarPartPromise('Z3/RR-car-door.js', 'RR-car-door', {id: 'A2137303002'}), // // 右后门
         
     ])
     // 全部加载完成才进这里
@@ -98,7 +98,7 @@ window.axios.get('static/json/car-part/Z1/model.json')
         store.commit('LOADING_STATUS', true);
         Cache.clear();
         // setColorById('A2137200105', '#CF421D');
-        renderer.render(scene, camera);
+        // renderer.render(scene, camera);
         animate();
         window.axios.get('static/json/info.json')
         .then(function (res) {
@@ -126,7 +126,6 @@ window.axios.get('static/json/car-part/Z1/model.json')
             for (var id in infoData) {
                 var item = infoData[id];
                 var color = null;
-                console.log(item.value)
                 if (item.value < 0.05) {
                     color = '#F63A38';
                 } else if (item.value < 0.15) {
@@ -140,7 +139,6 @@ window.axios.get('static/json/car-part/Z1/model.json')
                 }
                 setColorById(id, color)
             }
-            
         })
     })
 
