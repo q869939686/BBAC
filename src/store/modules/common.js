@@ -5,7 +5,8 @@ const state = {
     isCarLoadingCompleted: false,
     isToPart: false,
     isShowChart: false,
-    temp: null // 随便存
+    temp: null, // 随便存,
+    viewAction: '3D'
 }
 
 // getters
@@ -25,7 +26,7 @@ const getters = {
 // mutations
 const mutations = {
     /**
-     * 处理 changeLoadingStatus
+     * 部件是否加载完成
      * @param {object} state 默认回传的
      * @param {boolean}
      */
@@ -33,7 +34,7 @@ const mutations = {
         state.isCarLoadingCompleted = payload
     },
     /**
-     * 处理 changeToPartStatus
+     * 是否跳到详细部件
      * @param {object} state 默认回传的
      * @param {boolean}
      */
@@ -50,7 +51,15 @@ const mutations = {
     },
     upDateTemp (state, payload) {
         state.temp = payload;
-    }
+    },
+    /**
+     * 3d BI切换
+     * @param {object} state 默认回传的
+     * @param {String} '3D' | 'BI'
+     */
+    [types.VIEW_ACTION] (state, payload) {
+        state.viewAction = payload;
+    },
 }
 
 export default {

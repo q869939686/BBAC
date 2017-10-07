@@ -7,6 +7,7 @@
 
 <script>
 import Top from '@/views/top'
+require("vue2-scrollbar/dist/style/vue2-scrollbar.css")
 export default {
     components: {
         Top

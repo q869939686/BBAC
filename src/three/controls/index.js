@@ -10,12 +10,15 @@ var controls = new OrbitControls(camera, renderer.domElement);
 
 // 鼠标控制
 controls.addEventListener('change', function (ev) {
+  // console.log(camera)
+  // renderer.render(scene, camera);
   return;
 })
 controls.maxPolarAngle = Math.PI / 2;
 controls.enableZoom = true; //缩放
 controls.enablePan = false; 
 controls.enableRotate = true; //转换
+
 // 点击事件
 var domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 

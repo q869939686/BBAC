@@ -1,7 +1,7 @@
 /*此文件專門用來覆蓋樣式 src/assets/cover.less */
 @background: #FFFFFF;
-/* #app {
-    .el-tabs__item:hover {
+#app {
+    /* .el-tabs__item:hover {
         color: #FFFFFF;
         cursor: pointer;
     }
@@ -14,5 +14,22 @@
     }
     .el-tree-node__content:hover {
         background: #525252;
+    } */
+    .el-collapse-item{
+        border-radius: 30px;
+        overflow: hidden
     }
-} */
+
+    .filter-tree{
+        max-height: 500px;
+        overflow: auto;
+    }
+    .el-collapse-item__header{
+        height: 32px;
+        line-height: 32px;
+    }
+}
+.el-select .el-input__inner{
+    border: transparent;
+    border-bottom: 1px solid #E6E6E6;
+}

@@ -5,12 +5,14 @@ import App from './App'
 import axios from './plugins/axios' // 放router前面是为了后面可以直接从window.axios拿到
 import router from './router'
 import store from './store'
-
+import './assets/fonts/iconfont.js'
 // import AppConfig from './AppConfig'
 // 引入组件，不然用不了， 不全部引入是因为体积会变大，需要什么在引
 import {
     Button,
     Col,
+    Collapse,
+    CollapseItem,
     Option,
     Row,
     Radio,
@@ -23,6 +25,8 @@ import {
 
 Vue.use(Button)
 Vue.use(Col)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
 Vue.use(Option)
 Vue.use(Row)
 Vue.use(Radio)
