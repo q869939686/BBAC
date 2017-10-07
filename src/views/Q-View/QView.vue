@@ -1,4 +1,5 @@
 <template>
+    这是修改了
     <el-row>24 = 4 + 12 +8
         <el-col :span="5">
             <!-- v-model 双向绑定，绑data上的值 -->
@@ -164,6 +165,9 @@ export default {
                 controls.autoRotate = true;
                 controls.update();
             });
+        },
+        aa () {
+            // a
         }
     }
 }
