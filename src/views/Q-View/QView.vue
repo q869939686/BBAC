@@ -1,7 +1,7 @@
 <template>
     <el-row>
         <el-col :span="5">
-            <!-- v-model 双向绑定，绑data上的值 -->
+            <!-- v-model 双向绑定，绑data上的值 我写的-->
             <el-select v-model="carType" filterable placeholder="请选择" @change="carTypeChange()">
                 <el-option
                     v-for="item in carTypeOptions"
