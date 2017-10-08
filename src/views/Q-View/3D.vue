@@ -71,91 +71,115 @@
         </div>
             <!-- 时间轴和详情 -->
         <div  class="">
-            <div>
-                时间轴
-            </div>
-            <div class="other-info">
-                <div class="flex-row top">
-                    <div class="flex-col-10">
-                        <div style="font-size: 12px;">
-                            No.55717862
-                        </div>
-                        <div style="font-weight: 600">
-                            125 Total
-                        </div>
-                    </div>
-                    <div class="flex-col-3">(by views)</div>
+            <div class="flex-row" style="padding-right: 10px">
+                <div class="flex-col-1">
+                    <span>Time</span>
                 </div>
-                <scroll-bar :style="scrollBarStyle">
-                    <div class="flex-row body">
-                        <div class="flex-col-1">
-                            <div class="title">
-                                Basic Information
-                            </div>
-                            <div>
-                                A2136107400 > 61521037
-                            </div>
+                <div class="flex-col-10">
+                    <Timeline style="height: 70px;"/>
+                </div>
+            </div>
+            <div class="other-info" style="padding-right: 10px">
+                <div class="flex-row">
+                    <div class="flex-col-1">
+                        <div>
+                            2017/07/03
                         </div>
-                        <div class="flex-col-1">
-                            <div class="title">
-                                Defect Information
-                            </div>
-                            <div>
-                                <div>
-                                    <span>Defect:</span>
-                                    <span>Missing</span>
-                                </div>
-                                <div>
-                                    <span>Detection:</span>
-                                    <span>Tishi</span>
-                                </div>
-                                <div>
-                                    <span>Region:</span>
-                                    <span>Fs62_240</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-col-1">
-                            <div class="title">
-                                Other Information
-                            </div>
-                            <div>
-                                <div>
-                                    <span>Time:</span>
-                                    <span>2016/7/12</span>
-                                </div>
-                                <div>
-                                    <span>Done:</span>
-                                    <span>2016/7/12</span>
-                                </div>
-                                <div>
-                                    <span>Priority:</span>
-                                    <span>1</span>
-                                </div>
-                                <div>
-                                    <span>Charge:</span>
-                                    <span>Li Lei</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex-col-1">
-                            <div class="title">
-                                Solution
-                            </div>
-                            <div>
-                                Operators glue according to started
-                            </div>
-                        </div>
-                        <div class="flex-col-1">
-                            <div class="title">
-                                Views
-                            </div>
-                            <div>
-                                1375
-                            </div>
+                        <div class="title">
+                            Date
                         </div>
                     </div>
-                </scroll-bar>
+                    <div class="flex-col-1">
+                        <div >
+                            Fill2
+                        </div>
+                        <div class="title">
+                            Function
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            768.95
+                        </div>
+                        <div class="title">
+                            Length(mm)
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            190
+                        </div>
+                        <div class="title">
+                            Defect Length(mm)
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            75.3%
+                        </div>
+                        <div class="title">
+                            OK%
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div>
+                            D,E
+                        </div>
+                        <div class="title">
+                            Error Code
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-row">
+                    <div class="flex-col-1">
+                        <div>
+                            61521037
+                        </div>
+                        <div class="title">
+                            Production No.
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            MRALL BS
+                        </div>
+                        <div class="title">
+                            Plant
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            MRALL Yu Yue
+                        </div>
+                        <div class="title">
+                            Responsible
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            Low (click)
+                        </div>
+                        <div class="title">
+                            Risk assessment
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            1886689(click)
+                        </div>
+                        <div class="title">
+                            ZEUS No.
+                        </div>
+                    </div>
+                    <div class="flex-col-1">
+                        <div >
+                            Y
+                        </div>
+                        <div class="title">
+                            Similar Issue
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -171,10 +195,9 @@ import camera, { cameraPosition, changeCamera, cameraZoom } from '@/three/camera
 import scene from '@/three/scene';
 // components
 import Loading from '@/components/loading'
-
+import Timeline from '@/components/timeline'
 import KPI from '@/components/KPI'
 import SpearationLine from '@/components/separation-line'
-import ScrollBar from 'vue2-scrollbar'
 // utils
 import {getRemainingHeight} from '@/utils/dom'
 // views
@@ -186,8 +209,8 @@ export default {
         CarPartTree,
         'kpi': KPI,
         SpearationLine,
-        ScrollBar,
-        'BI': BI
+        'BI': BI,
+        Timeline
     },
     data () {
         return {
@@ -201,14 +224,7 @@ export default {
             isCarLoadingCompleted: state => state.common.isCarLoadingCompleted,
             barData: state => state.getChartData.barData,
             carPartInfo: state => state.carParts.carPartInfo
-        }),
-        scrollBarStyle: function () {
-            return {
-                width: "35%",
-                minWidth: "100%",
-                maxHeight: "150px"
-            }
-        }
+        })
     },
     mounted () {
         var renderer = initRenderer(this.$refs.threeContainer);
@@ -286,26 +302,18 @@ export default {
 .controls .icon{
     height: 30px;
 }
-.other-info .top{
-    padding: 10px;
-    border: 1px solid #CCC;
-}
-.other-info .body{
+
+.other-info .flex-row{
     padding: 10px;
     padding-top: 15px;
     border: 1px solid #CCC;
-    border-top: none;
-}
-.other-info .body>div {
-    display: inline-block;
-    vertical-align: top;
-    height: 100%;
-    align-self: flex-start;
-    font-size: 12px;
-}
-.other-info .body .title{
-    font-size: 13px;
     font-weight: 600;
+}
+
+.other-info .title{
+    font-size: 13px;
     margin-bottom: 15px;
+    margin-top: 10px;
+    font-weight: 500;
 }
 </style>

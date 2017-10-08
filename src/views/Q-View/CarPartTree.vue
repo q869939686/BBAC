@@ -41,8 +41,8 @@ import Scrollbar from 'vue2-scrollbar';
         // loaderCarPartPromise('Z2.1/A2136401800.js', 'A2136401800', {id: 'A2136401800'}), // 后围板
 
         // // // z2.2部分
-        // loaderCarPartPromise('Z2.2/R-side-wall-planking-assembly.js', 'R-side-wall-planking-assembly', {id: 'A2136303001'}), // 侧围外板总成（右）
-        // loaderCarPartPromise('Z2.2/L-side-wall-planking-assembly.js', 'L-side-wall-planking-assembly', {id: 'A2136302901'}), // 侧围外板总成（左）
+        // loaderCarPartPromise('Z2.2/R-side-wall-planking-assembly.js', 'R-side-wall-planking-assembly', {id: 'A2136303001'}), // 侧围外板总成(右)
+        // loaderCarPartPromise('Z2.2/L-side-wall-planking-assembly.js', 'L-side-wall-planking-assembly', {id: 'A2136302901'}), // 侧围外板总成(左)
         // loaderCarPartPromise('Z2.2/After-cap-table-coaming.js', 'After-cap-table-coaming', {id: 'A2136401100'}), // 后帽台围板
         // loaderCarPartPromise('Z2.2/A2136500800.js', 'A2136500800', {id: 'A2136500800'}), // 天窗支架
         // loaderCarPartPromise('Z2.2/other.js', 'other', {}), // 其他
@@ -106,7 +106,7 @@ export default {
                     ]
                 },
                 {
-                    id: 1,
+                    id: 2,
                     label: 'Z2.1',
                     children: [
                         {
@@ -140,6 +140,28 @@ export default {
                         {
                             id: 'A2136401800',
                             label: '后围板',
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    label: 'Z2.2',
+                    children: [
+                        {
+                            id: 'A2136303001',
+                            label: '侧围外板总成(右)'
+                        },
+                        {
+                            id: 'A2136302901',
+                            label: '侧围外板总成(左)'
+                        },
+                        {
+                            id: 'A2136401100',
+                            label: '后帽台围板'
+                        },
+                        {
+                            id: 'A2136500800',
+                            label: '天窗支架'
                         }
                     ]
                 }
