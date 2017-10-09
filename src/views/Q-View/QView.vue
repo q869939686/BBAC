@@ -20,10 +20,14 @@
                             </el-option>
                         </el-option-group>
                     </el-select>
-                    <div>
+
+                    <!--汽车图片-->
+                    <img v-show="isSelectedCarType" ref="carImg" src="" alt="" width="100%" height="122" style="border: 0px;margin: 20px 0;">
+                    
+                    <div class="from-item">
                         Time
                     </div>
-                    <el-select v-model="time" filterable placeholder="All" @change="timeChange()" style="margin-top: 20px">
+                    <el-select v-model="time" filterable placeholder="All" @change="timeChange()">
                         <el-option
                             v-for="item in timeOptions"
                             :key="item.value"
@@ -32,14 +36,14 @@
                         </el-option>
                     </el-select>
 
-                    <div>
-                        <el-radio class="radio" v-model="radio" label="1">Q-Sensor</el-radio>
-                        <el-radio class="radio" v-model="radio" label="2">Q-Stop</el-radio>
+                    <div class="text-left from-item" >
+                        <el-radio class="radio" v-model="radio" :label="1">Q-Sensor</el-radio>
+                        <el-radio class="radio" v-model="radio" :label="2">Q-Stop</el-radio>
                         </br>
-                        <el-radio class="radio" v-model="radio" label="3">Q-Alert</el-radio>
+                        <el-radio class="radio" v-model="radio" :label="3">Q-Alert</el-radio>
                     </div>
 
-                    <div style="position: relative">
+                    <div class="from-item" style="position: relative" >
                         <div id="sel_qsensor_mask" @click.prevent="showmask"></div>
                         <el-select  class="eWidth" v-model="multipleSelect" multiple placeholder="请选择">
                             <el-option
@@ -50,7 +54,7 @@
                             </el-option>
                         </el-select>
                     </div>
-                    <!--Q-Sensor (multiple choice)  -->
+                    <!--多选弹出层 -->
                     <el-dialog title="Q-Sensor (multiple choice)" :visible.sync="dialogVisible">
                         <div slot="title">
                             <p style="float:left">Q-Sensor (multiple choice)</p>
@@ -71,7 +75,8 @@
                             <el-button type="primary" @click="confirm" size="small">confirm</el-button>
                         </div>
                     </el-dialog> 
-                    <div class="flex-row" style="height: auto;margin-top: 240px; font-size: 12px">
+
+                    <div class="flex-row" style="height: auto;margin-top: 200px; font-size: 12px">
                         <div class="flex-col-1 text-left">
                             <svg class="icon" aria-hidden="true">
                                 <use xlink:href="#icon-arrow-left"></use>
@@ -90,13 +95,15 @@
                             </svg>
                         </div>
                     </div>
-                    <el-button  type="primary" class="my" >UPDATE</el-button>
+                    <div class="text-center">
+                        <el-button  type="primary" class="my" @click="update">UPDATE</el-button>
+                    </div>
                 </div>
             </el-col>
-            <!-- 模型部分 -->
+            <!-- 模型部分 和 BI切换-->
             <el-col :span="19">
                 <View3d v-show="viewAction === '3D'"/>
-                <ViewBI v-show="viewAction === 'BI'"/>
+                <ViewBI v-if="viewAction === 'BI'"/>
             </el-col>
         </el-row>
     </div>
@@ -105,6 +112,7 @@
 import { mapState } from 'vuex';
 import View3d from './3D';
 import ViewBI from './BI';
+var index = 0;
 export default {
     components: {
         'ViewBI': ViewBI,
@@ -154,7 +162,8 @@ export default {
     computed: {
         // 这里面的数据都是从store拿的，会实时更新
         ...mapState({
-            viewAction: state => state.common.viewAction
+            viewAction: state => state.common.viewAction,
+            isSelectedCarType: state => state.QView.isSelectedCarType,
         }),
         scrollBarStyle: function () {
             return {
@@ -172,11 +181,12 @@ export default {
          */
         carTypeChange () {
             console.log(this.carType)
+            
             // timeChange(this.carType)
-            this.$http.post('/a', {carType: this.carType})
-            .then(() => {
-                // 请求成功 给time select设置options的值
-            })
+            // this.$http.post('/a', {carType: this.carType})
+            // .then(() => {
+            //     // 请求成功 给time select设置options的值
+            // })
             // 这里假设成功了
             this.timeOptions = [
                 {
@@ -208,35 +218,56 @@ export default {
             // 从模态框拿值到下拉里面
             this.multipleSelect = this.checkList
             this.dialogVisible = false
+        },
+        /**
+         * update
+         */
+        update () {
+            if (this.carType !== '') {
+                // 选了车系，通知store改变状态
+                this.$store.commit('SELECT_CAR_TYPE', true)
+                this.$refs.carImg.src = "static/images/v213bg.jpg"
+            }
+
+            if (this.multipleSelect.length > 0) {
+                this.$store.commit('SENSOR_SELECT', true)
+            } else {
+                this.$store.commit('SENSOR_SELECT', false)
+            }
+            // 更新假数据
+            var data = [
+                [20, 30, 40, 50, 30, 10],
+                [120, 230, 40, 50, 30, 10],
+                [20, 30, 40, 50, 30, 10],
+                [20, 34, 40, 34, 30, 10],
+                [120, 230, 40, 43, 30, 10]
+            ]
+            var data2 = [
+                [120, 30, 40, 13, 44, 23],
+                [30, 130, 40, 63, 12, 64],
+                [53, 130, 70, 13, 34, 3],
+                [22, 30, 40, 34, 72, 34],
+                [120, 120, 40, 50, 23, 54]
+            ]
+            // 我再这里调用了， 并用两个数据模拟
+
+            this.$store.commit('GET_CHART_DATA', (index % 2 === 0) ? data : data2)
+
+            index++;
         }
     }
 }
 </script>
 <style>
 @import './index.css';
-.my{
-    width:180px;
-    height:40px;
-    margin-top: 20px;
-}
-#sel_qsensor_mask{
-    position: absolute;
-    top: 0px;
-    height: 40px;
+
+</style>
+<style scoped>
+.el-select{
     width: 100%;
-    z-index: 10;
 }
-.mask_main_checkbox{
-    width: 20%;
-    margin-bottom: 20px;
-}
-.page-wrap .el-dialog__footer{
-    background-color: #f2f2f2;
-    padding: 6px 0;
-}
-.el-dialog__header{
-    background-color: #f2f2f2;
-    padding: 10px 20px 10px;
+.from-item{
+    margin-top: 20px
 }
 </style>
 

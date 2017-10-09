@@ -75,8 +75,8 @@ export default {
     background-color: #000;
     color: #FFF;
     background: url('header.jpg') no-repeat;
-    background-size: 108% 100%;
-    height: 11vh;
+    background-size: 104% 94%;
+    height: 80px;
 }
 .top.header {
     .el-tabs__item:hover{

@@ -3,10 +3,11 @@ import * as types from '../mutation-types'
 // initial state
 const state = {
     carPartInfo: {
-        id: ''
+        id: '',
+        ok: ''
     },
     domElement: null,
-    carImg: ''
+    carImg: '',
 }
 
 // mutations
@@ -16,7 +17,7 @@ const mutations = {
      * @param {object} state 默认回传的
      * @param {object}　payload　= {id: String, name: String}
      */
-    [types.CAR_PARTS_INFO] (state, payload) {
+    [types.CAR_PARTS_INFO](state, payload) {
         state.carPartInfo = payload
     },
     /**
@@ -24,7 +25,7 @@ const mutations = {
      * @param {object} state 默认回传的
      * @param {Element}
      */
-    updateDomElement (state, payload) {
+    updateDomElement(state, payload) {
         state.domElement = payload
     },
     /**
@@ -32,7 +33,7 @@ const mutations = {
      * @param {object} state 默认回传的
      * @param {Element}
      */
-    updateCarImg (state) {
+    updateCarImg(state) {
         if (state.domElement !== null) {
             state.carImg = state.domElement.toDataURL('image/jpeg')
         }

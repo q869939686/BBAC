@@ -25,7 +25,7 @@
                         <div class="car-part-info">
                             <spearation-line/>
                             <span class="cart-part-info-title">Part Num.</span>
-                            <span class="cart-part-info-content">{{carPartInfo.id}}</span>
+                            <span class="cart-part-info-content">No. {{carPartInfo.id}}</span>
                         </div>
                         <div class="car-part-info" style="margin-top: 20px;">
                             <spearation-line/>
@@ -79,104 +79,115 @@
                     <Timeline style="height: 70px;"/>
                 </div>
             </div>
-            <div class="other-info" style="padding-right: 10px">
-                <div class="flex-row">
+            <div  class="other-info" style="padding-right: 10px; min-height: 180px;">
+                <div v-show="isToPart" class="flex-row">
                     <div class="flex-col-1">
-                        <div>
-                            2017/07/03
-                        </div>
                         <div class="title">
                             Date
                         </div>
+                        <div>
+                            2017/07/03
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            Fill2
-                        </div>
+                        
                         <div class="title">
                             Function
                         </div>
+                        <div >
+                            Fill2
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            768.95
-                        </div>
+                        
                         <div class="title">
                             Length(mm)
                         </div>
+                        <div >
+                            768.95
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            190
-                        </div>
+                        
                         <div class="title">
                             Defect Length(mm)
                         </div>
+                        <div >
+                            190
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            75.3%
-                        </div>
+                        
                         <div class="title">
                             OK%
                         </div>
+                        <div >
+                            {{parseInt(carPartInfo.ok)}}%
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div>
-                            D,E
-                        </div>
+                        
                         <div class="title">
                             Error Code
                         </div>
+                        <div>
+                            D,E
+                        </div>
                     </div>
                 </div>
-                <div class="flex-row">
+                <div v-show="isToPart" class="flex-row" style="margin-top: 0px; border-top: 0px">
                     <div class="flex-col-1">
-                        <div>
-                            61521037
-                        </div>
+                        
                         <div class="title">
                             Production No.
                         </div>
+                        <div>
+                            {{carPartInfo.id}}
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            MRALL BS
-                        </div>
+                        
                         <div class="title">
                             Plant
                         </div>
+                        <div >
+                            MRALL BS
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            MRALL Yu Yue
-                        </div>
+                        
                         <div class="title">
                             Responsible
                         </div>
+                        <div >
+                            MRALL Yu Yue
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            Low (click)
-                        </div>
+                        
                         <div class="title">
                             Risk assessment
                         </div>
+                        <div  class="down" @click="download()">
+                            Low (click)
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            1886689(click)
-                        </div>
+                        
                         <div class="title">
                             ZEUS No.
                         </div>
+                        <div class="down"  @click="download()">
+                            1886689(click)
+                        </div>
                     </div>
                     <div class="flex-col-1">
-                        <div >
-                            Y
-                        </div>
+                        
                         <div class="title">
                             Similar Issue
+                        </div>
+                        <div >
+                            Y
                         </div>
                     </div>
                 </div>
@@ -203,6 +214,8 @@ import {getRemainingHeight} from '@/utils/dom'
 // views
 import CarPartTree from './CarPartTree'
 import BI from './BI';
+// config
+import AppConfig from '@/AppConfig'
 export default {
     components: {
         Loading,
@@ -222,7 +235,7 @@ export default {
         ...mapState({
             isToPart: state => state.common.isToPart,
             isCarLoadingCompleted: state => state.common.isCarLoadingCompleted,
-            barData: state => state.getChartData.barData,
+            barData: state => state.QView.barData,
             carPartInfo: state => state.carParts.carPartInfo
         })
     },
@@ -267,6 +280,12 @@ export default {
         zoom (action) {
             cameraZoom(action);
             controls.update();
+        },
+        /**
+         *下载文件
+        */
+        download () {
+            window.open(AppConfig.BASE_URL + '/static/files/V213 Hang on parts destructive test report for gl.pdf')
         }
     }
 }
@@ -290,6 +309,7 @@ export default {
     transform: scale(1, 1);
 }
 .car-part-info .cart-part-info-content{
+    display: block;
     height: 30px;
     width: 130px;
     font-size: 12px;
@@ -302,18 +322,32 @@ export default {
 .controls .icon{
     height: 30px;
 }
-
-.other-info .flex-row{
-    padding: 8px;
-    padding-top: 12px;
-    border: 1px solid #CCC;
-    font-weight: 600;
+.other-info{
+    padding: 10px;
 }
-
-.other-info .title{
+.other-info .flex-row{
+    margin-top: 10px;
+    border: 0.5px solid #CCC;
+    font-weight: 500;
     font-size: 13px;
+}
+.other-info .flex-row .flex-col-1{
+    border-right: 0.5px solid #CCC;
+    padding: 8px;
+}
+.other-info .flex-row:not(:first-child) .flex-col-1{
+    border-top: 0px;
+}
+.other-info .flex-row .flex-col-1 div{
+    min-height: 20px;
+}
+.other-info .title{
+    font-size: 14px;
     margin-bottom: 10px;
     margin-top: 8px;
-    font-weight: 500;
+    font-weight: 600;
+}
+.down{
+    cursor: pointer;
 }
 </style>

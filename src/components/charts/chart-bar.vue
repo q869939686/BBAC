@@ -1,10 +1,9 @@
 <template>
-    <div ref="div" style="width: 100%;height: 300px">
+    <div ref="div" style="width: 100%;height: 100%">
     </div>
 </template>
 <script>
 import * as d3 from 'd3';
-import _ from 'lodash';
 export default {
     name: 'chart-bar',
     data () {
