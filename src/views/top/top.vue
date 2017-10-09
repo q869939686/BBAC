@@ -1,5 +1,5 @@
 <template>
-    <el-row class="top header">
+    <el-row class="top header" style="background: url('static/images/header.jpg') no-repeat;">
         <el-col :span="4">
             
         </el-col>
@@ -74,7 +74,7 @@ export default {
 .top.header {
     background-color: #000;
     color: #FFF;
-    background: url('header.jpg') no-repeat;
+
     background-size: 104% 94%;
     height: 80px;
 }
