@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="block">
          <div class="flex-row" style="position: 'relative'">
             <div
                 ref="threeContainer"
                 class="flex-col-1 renderer-container"
-                style="height: 400px;"
+                style="height: 360px;"
             >   
                 <!-- <canvas  ref="canvas" style="width: 100%;height: 100%;touch-action: none;"></canvas> -->
                 <!-- other -->
@@ -304,16 +304,16 @@ export default {
 }
 
 .other-info .flex-row{
-    padding: 10px;
-    padding-top: 15px;
+    padding: 8px;
+    padding-top: 12px;
     border: 1px solid #CCC;
     font-weight: 600;
 }
 
 .other-info .title{
     font-size: 13px;
-    margin-bottom: 15px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-top: 8px;
     font-weight: 500;
 }
 </style>

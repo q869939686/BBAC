@@ -1,14 +1,14 @@
 <template>
     <el-row class="top header">
         <el-col :span="4">
-            logo
+            
         </el-col>
         <el-col :span="8">
             <el-tabs v-model="activeKey" @tab-click="handleClick">
-                <el-tab-pane label="Q-View" name="Q-View" path="/Q-View">
+                <!-- <el-tab-pane label="Q-View" name="Q-View" path="/Q-View">
                 </el-tab-pane>
                 <el-tab-pane label="配置管理" name="second" path="/xxx"></el-tab-pane>
-                <el-tab-pane label="角色管理" name="third" path="/"></el-tab-pane>
+                <el-tab-pane label="角色管理" name="third" path="/"></el-tab-pane> -->
             </el-tabs>
         </el-col>
         
@@ -16,7 +16,7 @@
             <el-select
                 v-model="select"
                 placeholder="请选择"
-                style="margin-top: 10px"
+                style="margin-top: 30px;margin-left: 600px"
                 @change="selectChange"
             >
                 <el-option
@@ -37,7 +37,7 @@ export default {
     data () {
         return {
             activeKey: 'Q-View',
-            select: '3D',
+            select: 'BI',
             options: [
                 {
                     lable: '3D',
@@ -51,6 +51,7 @@ export default {
         }
     },
     mounted () {
+        this.selectChange('BI')
     },
     methods: {
         handleClick (tab, event) {
@@ -73,6 +74,9 @@ export default {
 .top.header {
     background-color: #000;
     color: #FFF;
+    background: url('header.jpg') no-repeat;
+    background-size: 108% 100%;
+    height: 11vh;
 }
 .top.header {
     .el-tabs__item:hover{

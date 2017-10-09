@@ -13,9 +13,14 @@ import {
     Col,
     Collapse,
     CollapseItem,
+    Checkbox,
+    CheckboxGroup,
+    Dialog,
     Option,
+    OptionGroup,
     Row,
     Radio,
+    RadioGroup,
     Select,
     Tabs,
     TabPane,
@@ -27,9 +32,14 @@ Vue.use(Button)
 Vue.use(Col)
 Vue.use(Collapse)
 Vue.use(CollapseItem)
+Vue.use(Checkbox)
+Vue.use(CheckboxGroup)
+Vue.use(Dialog)
 Vue.use(Option)
+Vue.use(OptionGroup)
 Vue.use(Row)
 Vue.use(Radio)
+Vue.use(RadioGroup)
 Vue.use(Select)
 Vue.use(Tabs)
 Vue.use(TabPane)

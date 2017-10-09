@@ -1,28 +1,38 @@
 <template>
-    <div>
+    <div >
         <el-row>
             <el-col :span="8">
-                <div style="position: relative" ref="canvas">
-                    <KPI style="display: inline-block; left: 5px;top:2px; width: 35px;margin-top: 48px;"/>
-                    <img ref="img" :src="carImg" width="80%" height="150%"/>
+                <div class="block" style="position: relative; height: 300px;" ref="canvas">
+                    <KPI style="display: inline-block; position: absolute; left: 5px;top: 50px; width: 35px;"/>
+                    <img ref="img" :src="carImg" width="100%" height="100%" style="border: 0px"/>
                 </div>
             </el-col>
             <el-col :span="8">
-                <ChartBar :data="[20,30,40,50,30,10]"/>
+                <div class="block">
+                    <ChartBar :data="[20,30,40,50,30,10]"/>
+                </div>
             </el-col>
             <el-col :span="8">
-                <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
+                <div class="block">
+                    <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
+                </div>
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="8">
-                <ChartBar :data="[20,30,40,50,30,10]"/>
+                <div class="block">
+                    <ChartBar :data="[20,30,40,50,30,10]"/>
+                </div>
             </el-col>
             <el-col :span="8">
-                <ChartBar :data="[20,30,40,50,30,10]"/>
+                <div class="block">
+                    <ChartBar :data="[20,30,40,50,30,10]"/>
+                </div>
             </el-col>
             <el-col :span="8">
-                <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
+                <div class="block">
+                    <ChartBar :data="[120,230,40,50,30,10]" :xdata="['v206','v205','v245','v265','v2705','v2505']"/>
+                </div>
             </el-col>
         </el-row>
     </div>

@@ -34,7 +34,9 @@ export default {
     },
     // 第一次渲染(此时无数据) this.$refs.div在被编译时获取该元素，原生dom
     mounted () {
-        intChart(this.$refs.div, this.data, this.xdata)
+        setTimeout(() => {
+            intChart(this.$refs.div, this.data, this.xdata)
+        }, 10);
     }
 }
 // 图表颜色，宽高都不行写死。
